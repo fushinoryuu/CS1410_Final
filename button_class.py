@@ -32,9 +32,6 @@ class SimpleButton:
         self.button_surface = pygame.Surface((self.width, self.height), flags=SRCALPHA, depth=32)
         self.button_surface.fill((0, 0, 0, 0))
 
-    def test(self):
-        return 1
-
     def button_bg(self, color):
         """Helper Method to create button background"""
 
