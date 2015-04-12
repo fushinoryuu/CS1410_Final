@@ -155,17 +155,3 @@ class GameMenu():
                 self.screen.blit(item.label, item.position)
 
             pygame.display.flip()
-
-if __name__ == "__main__":
-    def hello_world():
-        print("Hello World!")
-
-    # Creating the screen
-    screen = pygame.display.set_mode((640, 480), 0, 32)
-
-    menu_items = ('Start', 'Quit')
-    funcs = {'Start': hello_world, 'Quit': sys.exit}
-
-    pygame.display.set_caption('Game Menu')
-    gm = GameMenu(screen, funcs.keys(), funcs)
-    gm.run()
