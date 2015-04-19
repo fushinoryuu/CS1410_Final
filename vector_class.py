@@ -37,3 +37,5 @@ class vec2
     def __truediv__(self, scalar):
         return vec2(self.x / scalar, self.y / scalar)
 
+    def test(self):
+        return "hi"
