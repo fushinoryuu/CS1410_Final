@@ -2,11 +2,21 @@ import pygame
 import sys
 import pyganim
 from pygame.locals import *
+import gamemenu
+
+pygame.init()
+
+
+def main_menu(display_surface):
+    funcs = {'Start': main, 'Quit': sys.exit}
+    gm = gamemenu.GameMenu(display_surface, funcs.keys(), funcs)
+    gm.run()
 
 
 def main():
     """This function will run the whole game."""
-    pygame.init()
+
+    # TODO This main function is too messy, it needs to be reworked into a proper flow of functions.
 
     # Define controls
     up = 'up'
@@ -34,7 +44,8 @@ def main():
     animation_types = 'back_run back_walk front_run front_walk left_run left_walk'.split()
     animation_objects = {}
     for animType in animation_types:
-        images_and_durations = [('gameimages/crono_%s.%s.gif' % (animType, str(num).rjust(3, '0')), 0.1) for num in range(6)]
+        images_and_durations = [('gameimages/crono_%s.%s.gif' %
+                                 (animType, str(num).rjust(3, '0')), 0.1) for num in range(6)]
         animation_objects[animType] = pyganim.PygAnimation(images_and_durations)
 
     # Creates the right-facing sprites by copying the left ones.
@@ -52,7 +63,6 @@ def main():
 
     basic_font = pygame.font.Font('freesansbold.ttf', 16)
     white = (255, 255, 255)
-    background_color = (100, 50, 50)
 
     clock = pygame.time.Clock()
     player_x = 300
@@ -120,7 +130,7 @@ def main():
                 if event.key == K_UP:
                     move_up = False
 
-                    # If the player was moving in a sideways direction before, change the direction the player is facing.
+                    # If the player was moving in a sideways direction before, change the direction the player is facing
                     if move_left:
                         direction = left
                     if move_right:
@@ -222,5 +232,12 @@ def main():
         clock.tick(30)
 
 if __name__ == "__main__":
+    # Define the screen.
+    screen_width = 640
+    screen_height = 480
+    display_surface = pygame.display.set_mode((screen_width, screen_height), 0, 32)
+    pygame.display.set_caption('Commando!')
+
+    main_menu(display_surface)
     main()
     sys.exit()
