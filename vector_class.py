@@ -2,7 +2,7 @@ __author__ = 'Steve'
 
 import math
 
-class vec2
+class vec2():
     def __init__(self, x=0.0, y=0.0):
         self.x = x
         self.y = y
