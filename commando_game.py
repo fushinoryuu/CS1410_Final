@@ -2,21 +2,13 @@ import pygame
 import sys
 import pyganim
 from pygame.locals import *
-import gamemenu
+from game_interface import GameInterface
 
 pygame.init()
+game_interface = GameInterface()
 
-
-def main_menu(display_surface):
-    funcs = {'Start': main, 'Quit': sys.exit}
-    gm = gamemenu.GameMenu(display_surface, funcs.keys(), funcs)
-    gm.run()
-
-
-def main():
+def game():
     """This function will run the whole game."""
-
-    # TODO This main function is too messy, it needs to be reworked into a proper flow of functions.
 
     # Define controls
     up = 'up'
@@ -31,7 +23,7 @@ def main():
     pygame.display.set_caption('Commando!')
 
     # Load the background.
-    background_image = pygame.image.load('gameimages/longBG.png')
+    background_game = pygame.image.load('gameimages/longBG.png')
 
     # Load the sprites
     front_standing = pygame.image.load('gameimages/crono_front.gif')
@@ -81,7 +73,7 @@ def main():
     running = move_up = move_down = move_left = move_right = False
 
     while True:
-        display_surface.blit(background_image, (background_x, background_y))
+        display_surface.blit(background_game, (background_x, background_y))
         for event in pygame.event.get():
 
             # Will handle exiting the program.
@@ -92,10 +84,6 @@ def main():
                 if event.key == K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-
-                if event.key == K_p:
-                    # TODO Make it so the game is paused when the P key is pressed
-                    pass
 
                 if event.key in (K_LSHIFT, K_RSHIFT):
                     running = True
@@ -231,13 +219,47 @@ def main():
         pygame.display.update()
         clock.tick(30)
 
-if __name__ == "__main__":
-    # Define the screen.
-    screen_width = 640
-    screen_height = 480
-    display_surface = pygame.display.set_mode((screen_width, screen_height), 0, 32)
-    pygame.display.set_caption('Commando!')
+def main():
+    """This function runs the main menu for the game."""
+    game_interface.start_setup()
 
-    main_menu(display_surface)
+    while True:
+        for event in pygame.event.get():
+            game_interface.all_buttons_active()
+
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+
+            elif event.type == MOUSEBUTTONDOWN:
+                mouse_xy = pygame.mouse.get_pos()
+
+                if game_interface.start_button.clicked(mouse_xy):
+                    game_interface.start_button.highlighted = True
+                elif game_interface.quit_button.clicked(mouse_xy):
+                    game_interface.quit_button.highlighted = True
+                elif game_interface.credits_button.clicked(mouse_xy):
+                    game_interface.credits_button.highlighted = True
+
+            elif event.type == MOUSEBUTTONUP:
+                if game_interface.start_button.clicked(mouse_xy):
+                    game()
+                    game_interface.start_button.highlighted = False
+                elif game_interface.quit_button.clicked(mouse_xy):
+                    pygame.quit()
+                    sys.exit()
+                elif game_interface.credits_button.clicked(mouse_xy):
+                    game_interface.status = 1
+                    game_interface.credits_button.highlighted = False
+
+        game_interface.display_interface()
+        pygame.display.update()
+
+if __name__ == "__main__":
     main()
+    pygame.quit()
     sys.exit()

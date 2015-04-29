@@ -22,6 +22,10 @@ class vec2():
         self.x /= mag
         self.y /= mag
 
+    def rotate(self, angle):
+        return vec2(round(self.x * round(math.cos(math.radians(angle)), 3)- self.y * round(math.sin(math.radians(angle)), 3), 3),
+                    round(self.x * round(math.sin(math.radians(angle)), 3) + self.y * round(math.cos(math.radians(angle)), 3), 3))
+
     def __add__(self, right):
         return vec2(self.x + right.x, self.y + right.y)
 
@@ -36,6 +40,3 @@ class vec2():
 
     def __truediv__(self, scalar):
         return vec2(self.x / scalar, self.y / scalar)
-
-    def test(self):
-        return "hi"
