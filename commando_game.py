@@ -8,8 +8,8 @@ pygame.mixer.quit()
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
 game_interface = GameInterface()
-click_start = pygame.mixer.Sound('DebrisHit.wav')
-menu_music = pygame.mixer.music.load('bensound-extremeaction.ogg')
+click_start = pygame.mixer.Sound('sound/DebrisHit.wav')
+menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
 
 def game():
     """This function will run the whole game."""
