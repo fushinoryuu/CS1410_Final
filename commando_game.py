@@ -1,6 +1,7 @@
 import pygame
 import sys
 import pyganim
+import time
 from pygame.locals import *
 from game_interface import GameInterface
 
@@ -10,6 +11,12 @@ pygame.init()
 game_interface = GameInterface()
 click_start = pygame.mixer.Sound('sound/DebrisHit.wav')
 menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
+click_start.set_volume(.25)
+pygame.mixer.music.set_volume(.2)
+
+def delay(amount):
+    """This function delays the game for a given amount of seconds."""
+    time.sleep(amount)
 
 def game():
     """This function will run the whole game."""
@@ -27,7 +34,7 @@ def game():
     pygame.display.set_caption('Commando!')
 
     # Load the background.
-    background_game = pygame.image.load('gameimages/NewTopDownBG.jpg')
+    background_game = pygame.image.load('gameimages/longBG.png')
 
     # Load the sprites
     front_standing = pygame.image.load('gameimages/crono_front.gif')
@@ -67,7 +74,7 @@ def game():
     run_rate = 12
 
     background_x = 0
-    background_y = 0
+    background_y = -820
     move_background = False
 
     instruction_surface = basic_font.render('Arrow keys to move. Hold shift to run.', True, white)
@@ -249,9 +256,11 @@ def main():
                     click_start.play()
                     pygame.mixer.music.play(-1)
                 elif game_interface.quit_button.clicked(mouse_xy):
+                    click_start.play()
                     game_interface.quit_button.highlighted = True
                 elif game_interface.credits_button.clicked(mouse_xy):
                     game_interface.credits_button.highlighted = True
+                    click_start.play()
 
             elif event.type == MOUSEBUTTONUP:
                 if game_interface.start_button.clicked(mouse_xy):
