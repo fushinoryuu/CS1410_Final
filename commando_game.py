@@ -6,6 +6,8 @@ from game_interface import GameInterface
 
 pygame.init()
 game_interface = GameInterface()
+pygame.mixer.pre_init(44100, 16, 2, 4096)
+#click_start = pygame.mixer.Sound('DebrisHit.wav')
 
 def game():
     """This function will run the whole game."""
@@ -240,6 +242,7 @@ def main():
 
                 if game_interface.start_button.clicked(mouse_xy):
                     game_interface.start_button.highlighted = True
+                    #click_start.play()
                 elif game_interface.quit_button.clicked(mouse_xy):
                     game_interface.quit_button.highlighted = True
                 elif game_interface.credits_button.clicked(mouse_xy):
