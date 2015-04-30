@@ -23,7 +23,7 @@ def game():
     pygame.display.set_caption('Commando!')
 
     # Load the background.
-    background_game = pygame.image.load('gameimages/longBG.png')
+    background_game = pygame.image.load('gameimages/NewTopDownBG.jpg')
 
     # Load the sprites
     front_standing = pygame.image.load('gameimages/crono_front.gif')
