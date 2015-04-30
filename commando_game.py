@@ -4,10 +4,12 @@ import pyganim
 from pygame.locals import *
 from game_interface import GameInterface
 
+pygame.mixer.quit()
+pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
 game_interface = GameInterface()
-pygame.mixer.pre_init(44100, 16, 2, 4096)
-#click_start = pygame.mixer.Sound('DebrisHit.wav')
+click_start = pygame.mixer.Sound('DebrisHit.wav')
+menu_music = pygame.mixer.music.load('bensound-extremeaction.ogg')
 
 def game():
     """This function will run the whole game."""
@@ -227,6 +229,8 @@ def main():
 
     while True:
         for event in pygame.event.get():
+
+
             game_interface.all_buttons_active()
 
             if event.type == QUIT:
@@ -242,7 +246,8 @@ def main():
 
                 if game_interface.start_button.clicked(mouse_xy):
                     game_interface.start_button.highlighted = True
-                    #click_start.play()
+                    click_start.play()
+                    pygame.mixer.music.play(-1)
                 elif game_interface.quit_button.clicked(mouse_xy):
                     game_interface.quit_button.highlighted = True
                 elif game_interface.credits_button.clicked(mouse_xy):
