@@ -4,6 +4,7 @@ import pyganim
 import time
 from pygame.locals import *
 from game_interface import GameInterface
+from collison_class import Square
 
 pygame.mixer.quit()
 pygame.mixer.pre_init(44100, -16, 2, 4096)
@@ -224,7 +225,6 @@ def game():
             player_y = 0
         if player_y > screen_height - player_height:
             player_y = screen_height - player_height
-
         display_surface.blit(instruction_surface, instruction_rectangle)
 
         pygame.display.update()
