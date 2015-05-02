@@ -11,7 +11,7 @@ pygame.init()
 game_interface = GameInterface()
 click_start = pygame.mixer.Sound('sound/DebrisHit.wav')
 menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
-click_start.set_volume(.25)
+click_start.set_volume(.30)
 pygame.mixer.music.set_volume(.2)
 
 def delay(amount):
