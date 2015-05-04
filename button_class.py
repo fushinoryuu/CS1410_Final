@@ -1,6 +1,7 @@
 # Mark's buttonClass.py
 import pygame
 from pygame.locals import *
+import time
 
 
 class SimpleButton:
@@ -15,6 +16,7 @@ class SimpleButton:
         self.position = position
         self.button_color = color
         self.text_color = text_color
+        self.bullet_hole = pygame.image.load('gameimages/bullet.png')
 
         # Generate a greyed-out version of color and a highlighted version of color.
         self.button_greyed = (color[0] * .25, color[1] * .25, color[2] * .25)
@@ -83,6 +85,7 @@ class SimpleButton:
             self.button_bg(self.highlight_color)
             self.button_text()
             self.surface.blit(self.button_surface, self.position)
+            self.surface.blit(self.bullet_hole, (self.position[0] + 20, self.position[1] - 10))
 
     def display_button(self):
         """Displays the button."""

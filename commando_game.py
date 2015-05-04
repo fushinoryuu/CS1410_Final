@@ -4,20 +4,14 @@ import pyganim
 import time
 from pygame.locals import *
 from game_interface import GameInterface
-from collison_class import Square
 
-pygame.mixer.quit()
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
 game_interface = GameInterface()
-click_start = pygame.mixer.Sound('sound/DebrisHit.wav')
+click_start = pygame.mixer.Sound('sound/Gunshot.wav')
 menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
-click_start.set_volume(.30)
+click_start.set_volume(1)
 pygame.mixer.music.set_volume(.2)
-
-def delay(amount):
-    """This function delays the game for a given amount of seconds."""
-    time.sleep(amount)
 
 def game():
     """This function will run the whole game."""
@@ -34,8 +28,8 @@ def game():
     display_surface = pygame.display.set_mode((screen_width, screen_height), 0, 32)
     pygame.display.set_caption('Commando!')
 
-    # Load the background.
-    background_game = pygame.image.load('gameimages/NewTopDownBG.jpg')
+    # Load images
+    background_game = pygame.image.load('gameimages/longBG.png')
 
     # Load the sprites
     front_standing = pygame.image.load('gameimages/crono_front.gif')
@@ -65,9 +59,6 @@ def game():
     # The player's default on spawn is facing down.
     direction = down
 
-    basic_font = pygame.font.Font('freesansbold.ttf', 16)
-    white = (255, 255, 255)
-
     clock = pygame.time.Clock()
     player_x = 300
     player_y = 200
@@ -75,12 +66,8 @@ def game():
     run_rate = 12
 
     background_x = 0
-    background_y = -820
+    background_y = 0
     move_background = False
-
-    instruction_surface = basic_font.render('Arrow keys to move. Hold shift to run.', True, white)
-    instruction_rectangle = instruction_surface.get_rect()
-    instruction_rectangle.bottomleft = (10, screen_height - 10)
 
     running = move_up = move_down = move_left = move_right = False
 
@@ -96,6 +83,9 @@ def game():
                 if event.key == K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+
+                if event.key == K_RETURN:
+                    main()
 
                 if event.key in (K_LSHIFT, K_RSHIFT):
                     running = True
@@ -186,10 +176,16 @@ def game():
 
             if move_up:
                 player_y -= rate
+                if move_background:
+                    background_y += rate
             if move_down:
                 player_y += rate
+                if move_background:
+                    background_y -= rate
             if move_left:
                 player_x -= rate
+                if move_background:
+                    background_x += rate
             if move_right:
                 player_x += rate
                 if move_background:
@@ -218,15 +214,24 @@ def game():
                 background_x = - screen_width
                 if player_x > screen_width - player_width:
                     player_x = screen_width - player_width
+
         else:
             move_background = False
 
         if player_y < 0:
             player_y = 0
-        if player_y > screen_height - player_height:
-            player_y = screen_height - player_height
-        display_surface.blit(instruction_surface, instruction_rectangle)
+        """if player_y > screen_height - player_height:
+            player_y = screen_height - player_height"""
+        if player_y > screen_height - screen_height//3:
+            if background_y > - screen_height:
+                player_y = screen_height - screen_height//3
+                move_background = True
+            elif background_y <= - screen_height:
+                background_y = - screen_height
+                if player_y > screen_height - player_height:
+                    player_y = screen_height - player_height
 
+        print(player_x, player_y)
         pygame.display.update()
         clock.tick(30)
 
@@ -236,8 +241,6 @@ def main():
 
     while True:
         for event in pygame.event.get():
-
-
             game_interface.all_buttons_active()
 
             if event.type == QUIT:
@@ -264,8 +267,8 @@ def main():
 
             elif event.type == MOUSEBUTTONUP:
                 if game_interface.start_button.clicked(mouse_xy):
-                    game()
                     game_interface.start_button.highlighted = False
+                    game()
                 elif game_interface.quit_button.clicked(mouse_xy):
                     pygame.quit()
                     sys.exit()
