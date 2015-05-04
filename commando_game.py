@@ -8,7 +8,7 @@ from game_interface import GameInterface
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
 game_interface = GameInterface()
-click_start = pygame.mixer.Sound('sound/Gunshot.wav')
+click_start = pygame.mixer.Sound('sound/DoubleGunshot.wav')
 menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
 click_start.set_volume(1)
 pygame.mixer.music.set_volume(.2)
@@ -31,20 +31,30 @@ def game():
     # Load images
     background_game = pygame.image.load('gameimages/longBG.png')
 
-    # Load the sprites
-    front_standing = pygame.image.load('gameimages/crono_front.gif')
-    back_standing = pygame.image.load('gameimages/crono_back.gif')
-    left_standing = pygame.image.load('gameimages/crono_left.gif')
+    # Load the player sprites
+    front_standing = pygame.image.load('gameimages/player/crono_front.gif')
+    back_standing = pygame.image.load('gameimages/player/crono_back.gif')
+    left_standing = pygame.image.load('gameimages/player/crono_left.gif')
     right_standing = pygame.transform.flip(left_standing, True, False)
     player_width, player_height = front_standing.get_size()
+
+    # Load the enemy sprites
+    enemy_left = pygame.image.load('gameimages/enemies/enemy_front.gif')
 
     # Create the PygAnim objects for walking/running in all directions
     animation_types = 'back_run back_walk front_run front_walk left_run left_walk'.split()
     animation_objects = {}
     for animType in animation_types:
-        images_and_durations = [('gameimages/crono_%s.%s.gif' %
+        images_and_durations = [('gameimages/player/crono_%s.%s.gif' %
                                  (animType, str(num).rjust(3, '0')), 0.1) for num in range(6)]
         animation_objects[animType] = pyganim.PygAnimation(images_and_durations)
+
+    enemy_types = 'left_walk'.split()
+    enemy_objects = {}
+    for animType in enemy_types:
+        images_and_durations = [('gameimages/enemies/enemy_%s.%s.gif' %
+                                 (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
+        enemy_objects[animType] = pyganim.PygAnimation(images_and_durations)
 
     # Creates the right-facing sprites by copying the left ones.
     animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
@@ -55,6 +65,7 @@ def game():
     animation_objects['right_run'].makeTransformsPermanent()
 
     move_conductor = pyganim.PygConductor(animation_objects)
+    enemy_conductor = pyganim.PygConductor(enemy_objects)
 
     # The player's default on spawn is facing down.
     direction = down
@@ -65,6 +76,9 @@ def game():
     walk_rate = 4
     run_rate = 12
 
+    enemy_x = 100
+    enemy_y = 100
+
     background_x = 0
     background_y = 0
     move_background = False
@@ -73,7 +87,10 @@ def game():
 
     while True:
         display_surface.blit(background_game, (background_x, background_y))
+        enemy_conductor.play()
+        enemy_objects['left_walk'].blit(display_surface, (enemy_x, enemy_y))
         for event in pygame.event.get():
+
 
             # Will handle exiting the program.
             if event.type == QUIT:
@@ -220,8 +237,6 @@ def game():
 
         if player_y < 0:
             player_y = 0
-        """if player_y > screen_height - player_height:
-            player_y = screen_height - player_height"""
         if player_y > screen_height - screen_height//3:
             if background_y > - screen_height:
                 player_y = screen_height - screen_height//3
