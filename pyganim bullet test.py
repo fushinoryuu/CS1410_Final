@@ -19,6 +19,9 @@ class Bullet(pygame.sprite.Sprite):
         """ Move the bullet. """
         self.rect.y -= 3
 
+    def test(self):
+        pass
+
 pygame.init()
 
 # define some constants
