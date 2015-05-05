@@ -96,6 +96,11 @@ def game():
     clock = pygame.time.Clock()
     player_x = 300
     player_y = 200
+
+    position = player_x, player_y
+    player.rect.x = position[0]
+    player.rect.y = position[1]
+
     walk_rate = 4
     run_rate = 12
 
@@ -111,7 +116,6 @@ def game():
         display_surface.blit(background_game, (background_x, background_y))
         enemy_conductor.play()
         enemy_objects['left_walk'].blit(display_surface, (enemy_x, enemy_y))
-
         allSPRITESlist.draw(display_surface)
 
         for event in pygame.event.get():
@@ -273,6 +277,7 @@ def game():
 
         print(player_x, player_y)
         pygame.display.update()
+
         #Collision variable(Makes the Orange square collide with the Purple ones)
         squaresHITlist = pygame.sprite.spritecollide(player, squareList, True)
         clock.tick(30)
