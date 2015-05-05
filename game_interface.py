@@ -30,7 +30,7 @@ class GameInterface:
         button_width = self.display_width//5
         button_height = button_width//4
         button_x = self.display_width//2 - button_width//2
-        button_y = self.display_height//2 - button_height//2 + 30
+        button_y = self.display_height//2 - button_height//2 + 150
         button_position = (button_x, button_y)
 
         self.start_button = SimpleButton(button_width, button_height, self.orange, self.grey, "Start Game",
