@@ -18,8 +18,27 @@ click_start.set_volume(1)
 pygame.mixer.music.set_volume(.07)
 
 
-def game():
+class Bullet(pygame.sprite.Sprite):
+    """ This class represents the bullet . """
 
+    def __init__(self):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        self.image = pygame.image.load('gameimages/player/bulletImage.png')
+
+
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        """ Move the bullet. """
+        self.rect.y -= 3
+
+    def test(self):
+        pass
+
+
+def game():
     # Define controls
     up = 'up'
     down = 'down'
@@ -39,6 +58,10 @@ def game():
     enemy_amount = 10
     enemy_list = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()
+
+    all_sprites_list = pygame.sprite.Group()
+    bullet_list = pygame.sprite.Group()
+
 
 
     for i in range(enemy_amount):
@@ -158,6 +181,12 @@ def game():
                     walking.play()
                     if not move_up and not move_down:
                         direction = right
+                elif event.key == K_SPACE:
+                    bullet = Bullet()
+                    bullet.rect.x = player_x
+                    bullet.rect.y = player_y
+                    all_sprites_list.add(bullet)
+                    bullet.update()
 
             elif event.type == KEYUP:
                 if event.key in (K_LSHIFT, K_RSHIFT):
@@ -258,9 +287,9 @@ def game():
         # Make sure the player does move off the screen
         if player_x < 0:
             player_x = 0
-        if player_x > screen_width - screen_width//3:
+        if player_x > screen_width - screen_width // 3:
             if background_x > - screen_width:
-                player_x = screen_width - screen_width//3
+                player_x = screen_width - screen_width // 3
                 move_background = True
             elif background_x <= - screen_width:
                 background_x = - screen_width
@@ -272,9 +301,9 @@ def game():
 
         if player_y < 0:
             player_y = 0
-        if player_y > screen_height - screen_height//3:
+        if player_y > screen_height - screen_height // 3:
             if background_y > - screen_height:
-                player_y = screen_height - screen_height//3
+                player_y = screen_height - screen_height // 3
                 move_background = True
             elif background_y <= - screen_height:
                 background_y = - screen_height
@@ -284,9 +313,10 @@ def game():
         print(player_x, player_y)
         pygame.display.update()
 
-        #Collision variable(Makes the Orange square collide with the Purple ones)
+        # Collision variable(Makes the Orange square collide with the Purple ones)
         #squaresHITlist = pygame.sprite.spritecollide(player, squareList, True)
         clock.tick(30)
+
 
 def main():
     """This function runs the main menu for the game."""
@@ -330,6 +360,7 @@ def main():
                     game_interface.credits_button.highlighted = False
         game_interface.display_interface()
         pygame.display.update()
+
 
 if __name__ == "__main__":
     main()

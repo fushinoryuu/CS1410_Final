@@ -10,14 +10,14 @@ class Bullet(pygame.sprite.Sprite):
         # Call the parent class (Sprite) constructor
         super().__init__()
 
-        self.image = pygame.Surface([4, 10])
-        self.image.fill(BLACK)
+        self.image = pygame.image.load('gameimages/player/bulletImage.png')
+
 
         self.rect = self.image.get_rect()
 
     def update(self):
         """ Move the bullet. """
-        self.rect.y -= 3
+        self.rect.y -= 7
 
     def test(self):
         pass
