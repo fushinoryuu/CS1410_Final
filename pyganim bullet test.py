@@ -39,28 +39,28 @@ pygame.display.set_caption('Pyganim Test 4')
 longBGimage = pygame.image.load('gameimages/longBG.png')
 
 # load the "standing" sprites (these are single images, not animations)
-front_standing = pygame.image.load('gameimages/player/crono_front.gif')
-back_standing = pygame.image.load('gameimages/player/crono_back.gif')
-left_standing = pygame.image.load('gameimages/player/crono_left.gif')
+front_standing = pygame.image.load('gameimages/player/soldierFront.png')
+back_standing = pygame.image.load('gameimages/player/soldierBack.png')
+left_standing = pygame.image.load('gameimages/player/soldierLeft.png')
 right_standing = pygame.transform.flip(left_standing, True, False)
 
 playerWidth, playerHeight = front_standing.get_size()
 
 # creating the PygAnimation objects for walking/running in all directions
-animTypes = 'back_run back_walk front_run front_walk left_run left_walk'.split()
+animTypes = 'back_walk front_walk left_walk'.split()
 #print(animTypes)
 animObjs = {}
 for animType in animTypes:
-    imagesAndDurations = [('gameimages/player/crono_%s.%s.gif' % (animType, str(num).rjust(3, '0')), 0.1) for num in range(6)]
+    imagesAndDurations = [('gameimages/player/soldier_%s.%s.png' % (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
     animObjs[animType] = pyganim.PygAnimation(imagesAndDurations)
 
 # create the right-facing sprites by copying and flipping the left-facing sprites
 animObjs['right_walk'] = animObjs['left_walk'].getCopy()
 animObjs['right_walk'].flip(True, False)
 animObjs['right_walk'].makeTransformsPermanent()
-animObjs['right_run'] = animObjs['left_run'].getCopy()
-animObjs['right_run'].flip(True, False)
-animObjs['right_run'].makeTransformsPermanent()
+#animObjs['right_run'] = animObjs['left_run'].getCopy()
+#animObjs['right_run'].flip(True, False)
+#animObjs['right_run'].makeTransformsPermanent()
 
 moveConductor = pyganim.PygConductor(animObjs)
 print(moveConductor)
