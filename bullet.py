@@ -14,4 +14,4 @@ class Bullet(pygame.sprite.Sprite):
 
     def update(self):
         """ Move the bullet. """
-        self.rect.y -= 3
+        self.rect.y -= 7
