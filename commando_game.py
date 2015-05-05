@@ -13,9 +13,9 @@ game_interface = GameInterface()
 click_start = pygame.mixer.Sound('sound/DoubleGunshot.wav')
 walking = pygame.mixer.Sound('sound/Walking.wav')
 menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
-walking.set_volume(.2)
+walking.set_volume(.8)
 click_start.set_volume(1)
-pygame.mixer.music.set_volume(.2)
+pygame.mixer.music.set_volume(.07)
 
 
 def game():
@@ -315,7 +315,7 @@ def main():
                 if game_interface.start_button.clicked(mouse_xy):
                     game_interface.start_button.highlighted = True
                     click_start.play()
-                    #pygame.mixer.music.play(-1)
+                    pygame.mixer.music.play(-1)
                 elif game_interface.quit_button.clicked(mouse_xy):
                     click_start.play()
                     game_interface.quit_button.highlighted = True
