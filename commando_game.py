@@ -2,10 +2,10 @@ import pygame
 import sys
 from collison_class import Collision
 import pyganim
-import time
 from pygame.locals import *
 from game_interface import GameInterface
 from random import *
+from bullet import Bullet
 
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
@@ -16,27 +16,6 @@ menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
 walking.set_volume(.8)
 click_start.set_volume(1)
 pygame.mixer.music.set_volume(.07)
-
-
-class Bullet(pygame.sprite.Sprite):
-    """ This class represents the bullet . """
-
-    def __init__(self):
-        # Call the parent class (Sprite) constructor
-        super().__init__()
-
-        self.image = pygame.image.load('gameimages/player/bulletImage.png')
-
-
-        self.rect = self.image.get_rect()
-
-    def update(self):
-        """ Move the bullet. """
-        self.rect.y -= 3
-
-    def test(self):
-        pass
-
 
 def game():
     # Define controls
@@ -58,11 +37,6 @@ def game():
     enemy_amount = 10
     enemy_list = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()
-
-    all_sprites_list = pygame.sprite.Group()
-    bullet_list = pygame.sprite.Group()
-
-
 
     for i in range(enemy_amount):
         enemy = Collision(60, 66)
@@ -132,6 +106,10 @@ def game():
     move_background = False
 
     running = move_up = move_down = move_left = move_right = False
+
+    all_sprites_list = pygame.sprite.Group()
+    bullet_list = pygame.sprite.Group()
+
     while True:
         display_surface.blit(background_game, (background_x, background_y))
         enemy_conductor.play()
@@ -310,6 +288,8 @@ def game():
                 if player_y > screen_height - player_height:
                     player_y = screen_height - player_height
 
+        all_sprites_list.update()
+        all_sprites_list.draw(display_surface)
         print(player_x, player_y)
         pygame.display.update()
 
