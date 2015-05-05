@@ -1,6 +1,6 @@
 import pygame
 import sys
-from collison_class import Square
+from collison_class import Collision
 import pyganim
 import time
 from pygame.locals import *
@@ -38,22 +38,20 @@ def game():
     background_game = pygame.image.load('gameimages/longBG.png')
 
     # This is the purple and orange square information for collision in the game.
-    enemy = 5
-    PURPLE = (100, 10, 175)
-    ORANGE  = (230, 100,  25)
-    squareList = pygame.sprite.Group()
-    allSPRITESlist = pygame.sprite.Group()
+    enemy_amount = 10
+    enemy_list = pygame.sprite.Group()
+    all_sprites = pygame.sprite.Group()
 
 
-    for i in range(enemy):
-        square = Square(PURPLE, 30, 30)
-        square.rect.x = randrange(30, screen_width) - 30
-        square.rect.y = randrange(30, screen_height) - 30
-        squareList.add(square)
-        allSPRITESlist.add(square)
+    for i in range(enemy_amount):
+        enemy = Collision(60, 66)
+        enemy.rect.x = randrange(30, screen_width) - 30
+        enemy.rect.y = randrange(30, screen_height) - 30
+        enemy_list.add(enemy)
+        all_sprites.add(enemy)
 
-    player = Square(ORANGE, 30, 30)
-    allSPRITESlist.add(player)
+    player = Collision(44, 68)
+    all_sprites.add(player)
 
     # Load the player sprites
     front_standing = pygame.image.load('gameimages/player/crono_front.gif')
@@ -118,7 +116,7 @@ def game():
         display_surface.blit(background_game, (background_x, background_y))
         enemy_conductor.play()
         enemy_objects['left_walk'].blit(display_surface, (enemy_x, enemy_y))
-        allSPRITESlist.draw(display_surface)
+        all_sprites.draw(display_surface)
 
         for event in pygame.event.get():
 
@@ -290,7 +288,7 @@ def game():
         pygame.display.update()
 
         #Collision variable(Makes the Orange square collide with the Purple ones)
-        squaresHITlist = pygame.sprite.spritecollide(player, squareList, True)
+        #squaresHITlist = pygame.sprite.spritecollide(player, squareList, True)
         clock.tick(30)
 
 def main():

@@ -1,24 +1,23 @@
-# test4_pyganim.py - A pyganim test program.
-#
-# This program shows off the use of a PygConductor to help organize your
-# animation objects. Conductors basically let you call PygAnimation methods on
-# several PygAnimation objects at once (e.g. You can have all the animation
-# objects start playing at the same time.)
-#
-# The animation images come from POW Studios, and are available under an
-# Attribution-only license. Check them out, they're really nice.
-# http://powstudios.com/
-#
-# The walking sprites are shamelessly taken from the excellent SNES game
-# Chrono Trigger.
-# http://www.videogamesprites.net/ChronoTrigger
-
-
 import pygame
 from pygame.locals import *
 import sys
 import time
 import pyganim
+
+class Bullet(pygame.sprite.Sprite):
+    """ This class represents the bullet . """
+    def __init__(self):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        self.image = pygame.Surface([4, 10])
+        self.image.fill(BLACK)
+
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        """ Move the bullet. """
+        self.rect.y -= 3
 
 pygame.init()
 
@@ -37,9 +36,9 @@ pygame.display.set_caption('Pyganim Test 4')
 longBGimage = pygame.image.load('gameimages/longBG.png')
 
 # load the "standing" sprites (these are single images, not animations)
-front_standing = pygame.image.load('gameimages/crono_front.gif')
-back_standing = pygame.image.load('gameimages/crono_back.gif')
-left_standing = pygame.image.load('gameimages/crono_left.gif')
+front_standing = pygame.image.load('gameimages/player/crono_front.gif')
+back_standing = pygame.image.load('gameimages/player/crono_back.gif')
+left_standing = pygame.image.load('gameimages/player/crono_left.gif')
 right_standing = pygame.transform.flip(left_standing, True, False)
 
 playerWidth, playerHeight = front_standing.get_size()
@@ -49,12 +48,8 @@ animTypes = 'back_run back_walk front_run front_walk left_run left_walk'.split()
 #print(animTypes)
 animObjs = {}
 for animType in animTypes:
-    imagesAndDurations = [('gameimages/crono_%s.%s.gif' % (animType, str(num).rjust(3, '0')), 0.1) for num in range(6)]
+    imagesAndDurations = [('gameimages/player/crono_%s.%s.gif' % (animType, str(num).rjust(3, '0')), 0.1) for num in range(6)]
     animObjs[animType] = pyganim.PygAnimation(imagesAndDurations)
-#print (imagesAndDurations)
-#print(animObjs)
-
-
 
 # create the right-facing sprites by copying and flipping the left-facing sprites
 animObjs['right_walk'] = animObjs['left_walk'].getCopy()
@@ -64,10 +59,6 @@ animObjs['right_run'] = animObjs['left_run'].getCopy()
 animObjs['right_run'].flip(True, False)
 animObjs['right_run'].makeTransformsPermanent()
 
-# have the animation objects managed by a conductor.
-# With the conductor, we can call play() and stop() on all the animtion
-# objects at the same time, so that way they'll always be in sync with each
-# other.
 moveConductor = pyganim.PygConductor(animObjs)
 print(moveConductor)
 
@@ -88,30 +79,10 @@ xBG = 0
 yBG = 0
 moveBG = False
 
-instructionSurf = BASICFONT.render('Arrow keys to move. Hold shift to run.', True, WHITE)
-instructionRect = instructionSurf.get_rect()
-instructionRect.bottomleft = (10, WINDOWHEIGHT - 10)
-
 running = moveUp = moveDown = moveLeft = moveRight = False
 
-class Bullet(pygame.sprite.Sprite):
-    """ This class represents the bullet . """
-    def __init__(self):
-        # Call the parent class (Sprite) constructor
-        super().__init__()
- 
-        self.image = pygame.Surface([4, 10])
-        self.image.fill(BLACK)
- 
-        self.rect = self.image.get_rect()
-        
- 
-    def update(self):
-        """ Move the bullet. """
-        longBGimage.blit(self.image, (x,y))
-        
- 
-    
+all_sprites_list = pygame.sprite.Group()
+bullet_list = pygame.sprite.Group()
 
 while True:
     # windowSurface.fill(BGCOLOR)
@@ -155,9 +126,10 @@ while True:
 
             elif event.key == K_SPACE:
                 bullet = Bullet()
+                bullet.rect.x = x
+                bullet.rect.y = y
+                all_sprites_list.add(bullet)
                 bullet.update()
-                
-                
 
         elif event.type == KEYUP:
             if event.key in (K_LSHIFT, K_RSHIFT):
@@ -266,7 +238,7 @@ while True:
     if y > WINDOWHEIGHT - playerHeight:
         y = WINDOWHEIGHT - playerHeight
 
-    windowSurface.blit(instructionSurf, instructionRect)
-
+    all_sprites_list.update()
+    all_sprites_list.draw(windowSurface)
     pygame.display.update()
     mainClock.tick(30) # Feel free to experiment with any FPS setting.
