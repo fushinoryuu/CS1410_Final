@@ -19,8 +19,6 @@ pygame.mixer.music.set_volume(.07)
 
 
 def game():
-    """This function will run the whole game."""
-
 
     # Define controls
     up = 'up'
