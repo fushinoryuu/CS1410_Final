@@ -6,15 +6,13 @@ import pygame, sys
 from pygame.locals import *
 from random import randrange
 
-FPS = 60
 SQSIZE = 25
 
 enemy = 5
 
 PURPLE = (100, 10, 175)
 ORANGE = (230, 100, 25)
-screen_width = 640
-screen_height = 480
+
 
 class Square(pygame.sprite.Sprite):
 
@@ -27,21 +25,21 @@ class Square(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
 
-    def resizeSQ(self, x, y):
+    def __resizeSQ(self, x, y):
         self.image = pygame.transform.scale(self.image, (x, y))
         self.rect = self.image.get_rect()
 
 
-    def squareList(self):
-        self.squareList = pygame.sprite.Group()
-        self.allSPRITESlist = pygame.sprite.Group()
-
-        for i in range(enemy):
-            square = Square(PURPLE, SQSIZE, SQSIZE)
-            square.rect.x = randrange(SQSIZE, screen_width) - SQSIZE
-            square.rect.y = randrange(SQSIZE, screen_height) - SQSIZE
-            self.squareList.add(square)
-            self.allSPRITESlist.add(square)
+    # def __squareList(self):
+    #     self.squareList = pygame.sprite.Group()
+    #     self.allSPRITESlist = pygame.sprite.Group()
+    #
+    #     for i in range(enemy):
+    #         square = Square(self.PURPLE, SQSIZE, SQSIZE)
+    #         square.rect.x = randrange(SQSIZE, screen_width) - SQSIZE
+    #         square.rect.y = randrange(SQSIZE, screen_height) - SQSIZE
+    #         self.squareList.add(square)
+    #         self.allSPRITESlist.add(square)
 
 
 #These plus a few more above need to go into main

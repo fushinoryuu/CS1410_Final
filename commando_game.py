@@ -1,9 +1,11 @@
 import pygame
 import sys
+from collison_class import Square
 import pyganim
 import time
 from pygame.locals import *
 from game_interface import GameInterface
+from random import *
 
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
@@ -13,8 +15,10 @@ menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
 click_start.set_volume(1)
 pygame.mixer.music.set_volume(.2)
 
+
 def game():
     """This function will run the whole game."""
+
 
     # Define controls
     up = 'up'
@@ -31,12 +35,31 @@ def game():
     # Load images
     background_game = pygame.image.load('gameimages/longBG.png')
 
+    # This is the purple and orange square information for collision in the game.
+    enemy = 5
+    PURPLE = (100, 10, 175)
+    ORANGE  = (230, 100,  25)
+    squareList = pygame.sprite.Group()
+    allSPRITESlist = pygame.sprite.Group()
+
+
+    for i in range(enemy):
+        square = Square(PURPLE, 30, 30)
+        square.rect.x = randrange(30, screen_width) - 30
+        square.rect.y = randrange(30, screen_height) - 30
+        squareList.add(square)
+        allSPRITESlist.add(square)
+
+    player = Square(ORANGE, 30, 30)
+    allSPRITESlist.add(player)
+
     # Load the player sprites
     front_standing = pygame.image.load('gameimages/player/crono_front.gif')
     back_standing = pygame.image.load('gameimages/player/crono_back.gif')
     left_standing = pygame.image.load('gameimages/player/crono_left.gif')
     right_standing = pygame.transform.flip(left_standing, True, False)
     player_width, player_height = front_standing.get_size()
+
 
     # Load the enemy sprites
     enemy_left = pygame.image.load('gameimages/enemies/enemy_front.gif')
@@ -84,11 +107,13 @@ def game():
     move_background = False
 
     running = move_up = move_down = move_left = move_right = False
-
     while True:
         display_surface.blit(background_game, (background_x, background_y))
         enemy_conductor.play()
         enemy_objects['left_walk'].blit(display_surface, (enemy_x, enemy_y))
+
+        allSPRITESlist.draw(display_surface)
+
         for event in pygame.event.get():
 
 
@@ -248,6 +273,8 @@ def game():
 
         print(player_x, player_y)
         pygame.display.update()
+        #Collision variable(Makes the Orange square collide with the Purple ones)
+        squaresHITlist = pygame.sprite.spritecollide(player, squareList, True)
         clock.tick(30)
 
 def main():
@@ -290,7 +317,6 @@ def main():
                 elif game_interface.credits_button.clicked(mouse_xy):
                     game_interface.status = 1
                     game_interface.credits_button.highlighted = False
-
         game_interface.display_interface()
         pygame.display.update()
 
