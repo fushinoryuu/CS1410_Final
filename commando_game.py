@@ -11,7 +11,9 @@ pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
 game_interface = GameInterface()
 click_start = pygame.mixer.Sound('sound/DoubleGunshot.wav')
+walking = pygame.mixer.Sound('sound/Walking.wav')
 menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
+walking.set_volume(.2)
 click_start.set_volume(1)
 pygame.mixer.music.set_volume(.2)
 
@@ -97,9 +99,9 @@ def game():
     player_x = 300
     player_y = 200
 
-    position = player_x, player_y
-    player.rect.x = position[0]
-    player.rect.y = position[1]
+
+    player.rect.x = player_x
+    player.rect.y = player_y
 
     walk_rate = 4
     run_rate = 12
@@ -139,22 +141,26 @@ def game():
                 if event.key == K_UP:
                     move_up = True
                     move_down = False
+                    walking.play()
                     if not move_left and not move_right:
                         # Only change the direction to up if the player wasn't moving left/right
                         direction = up
                 elif event.key == K_DOWN:
                     move_down = True
                     move_up = False
+                    walking.play()
                     if not move_left and not move_right:
                         direction = down
                 elif event.key == K_LEFT:
                     move_left = True
                     move_right = False
+                    walking.play()
                     if not move_up and not move_down:
                         direction = left
                 elif event.key == K_RIGHT:
                     move_right = True
                     move_left = False
+                    walking.play()
                     if not move_up and not move_down:
                         direction = right
 
@@ -162,9 +168,11 @@ def game():
                 if event.key in (K_LSHIFT, K_RSHIFT):
                     # The player has stopped running.
                     running = False
+                    walking.stop()
 
                 if event.key == K_UP:
                     move_up = False
+                    walking.stop()
 
                     # If the player was moving in a sideways direction before, change the direction the player is facing
                     if move_left:
@@ -173,18 +181,21 @@ def game():
                         direction = right
                 elif event.key == K_DOWN:
                     move_down = False
+                    walking.stop()
                     if move_left:
                         direction = left
                     if move_right:
                         direction = right
                 elif event.key == K_LEFT:
                     move_left = False
+                    walking.stop()
                     if move_up:
                         direction = up
                     if move_down:
                         direction = down
                 elif event.key == K_RIGHT:
                     move_right = False
+                    walking.stop()
                     if move_up:
                         direction = up
                     if move_down:
@@ -304,7 +315,7 @@ def main():
                 if game_interface.start_button.clicked(mouse_xy):
                     game_interface.start_button.highlighted = True
                     click_start.play()
-                    pygame.mixer.music.play(-1)
+                    #pygame.mixer.music.play(-1)
                 elif game_interface.quit_button.clicked(mouse_xy):
                     click_start.play()
                     game_interface.quit_button.highlighted = True
