@@ -95,7 +95,6 @@ def game():
     player_x = 300
     player_y = 200
 
-
     player.rect.x = player_x
     player.rect.y = player_y
 

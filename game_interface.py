@@ -10,8 +10,8 @@ class GameInterface:
         self.display_height = 480
         self.status = 0
 
-        self.background_mainmenu = pygame.image.load('gameimages\mainmenu.png')
-        self.background_credits = pygame.image.load('gameimages\credits.png')
+        self.background_mainmenu = pygame.image.load('gameimages/newmainmenuBG.png')
+        self.background_credits = pygame.image.load('gameimages/credits.png')
 
         self.display_surface = pygame.display.set_mode((self.display_width, self.display_height), 0, 32)
         pygame.display.set_caption('Commando Game')

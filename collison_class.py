@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 
-
 class Collision(pygame.sprite.Sprite):
 
     def __init__(self, width, height):
