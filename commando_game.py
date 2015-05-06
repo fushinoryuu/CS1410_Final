@@ -12,7 +12,9 @@ pygame.init()
 game_interface = GameInterface()
 click_start = pygame.mixer.Sound('sound/DoubleGunshot.wav')
 walking = pygame.mixer.Sound('sound/Walking.wav')
+gunshot = pygame.mixer.Sound('sound/Gunshot.wav')
 menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
+gunshot.set_volume(.5)
 walking.set_volume(.8)
 click_start.set_volume(1)
 pygame.mixer.music.set_volume(.07)
@@ -143,6 +145,7 @@ def game():
                     if not move_up and not move_down:
                         direction = right
                 elif event.key == K_SPACE:
+                    gunshot.play()
                     if direction == up:
                         bullet = Bullet()
                         bullet.rect.x = (player_x + 25)
