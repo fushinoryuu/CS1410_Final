@@ -1,6 +1,5 @@
 import pygame
 import sys
-from collison_class import Collision
 import pyganim
 from pygame.locals import *
 from game_interface import GameInterface
@@ -32,21 +31,6 @@ def game():
 
     # Load images
     background_game = pygame.image.load('gameimages/asphaltBG.bmp')
-
-    # This is the purple and orange square information for collision in the game.
-    enemy_amount = 10
-    enemy_list = pygame.sprite.Group()
-    all_sprites = pygame.sprite.Group()
-
-    for i in range(enemy_amount):
-        enemy = Collision(60, 66)
-        enemy.rect.x = randrange(30, screen_width) - 30
-        enemy.rect.y = randrange(30, screen_height) - 30
-        enemy_list.add(enemy)
-        all_sprites.add(enemy)
-
-    player = Collision(44, 68)
-    all_sprites.add(player)
 
     # Load the player sprites
     front_standing = pygame.image.load('gameimages/player/crono_front.gif')
@@ -92,9 +76,6 @@ def game():
     player_x = 300
     player_y = 200
 
-    player.rect.x = player_x
-    player.rect.y = player_y
-
     walk_rate = 4
     run_rate = 12
 
@@ -114,7 +95,6 @@ def game():
         display_surface.blit(background_game, (background_x, background_y))
         enemy_conductor.play()
         enemy_objects['left_walk'].blit(display_surface, (enemy_x, enemy_y))
-        all_sprites.draw(display_surface)
 
         for event in pygame.event.get():
 
