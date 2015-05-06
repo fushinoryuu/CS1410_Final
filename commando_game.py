@@ -39,7 +39,7 @@ def game():
     pygame.display.set_caption('Commando!')
 
     # Load images
-    background_game = pygame.image.load('gameimages/crackeddirt.png')
+    background_game = pygame.image.load('gameimages/rev_crackeddirt.png')
 
     # Load the player sprites
     front_standing = pygame.image.load('gameimages/player/soldier_front.png')
@@ -311,9 +311,7 @@ def game():
                 display_surface.blit(right_standing, (player_x, player_y))
 
         # Make sure the player does move off the screen
-        if player_x < 0:
-            player_x = 0
-            player_obj.rect.x = 0
+
         if player_x > screen_width - screen_width // 3:
             if background_x > - screen_width:
                 player_x = screen_width - screen_width // 3
@@ -324,6 +322,15 @@ def game():
                 if player_x > screen_width - player_width:
                     player_x = screen_width - player_width
                     player_obj.rect.x = screen_width - player_width
+        elif player_x < screen_width//4:
+            if background_x < -player_obj.rect.x:
+                player_x =  screen_width//4
+                move_background = True
+            elif background_x < - player_obj.rect.x:
+                background_x =  player_obj.rect.x
+                if player_x < 0:
+                    player_x = 0
+                    player_obj.rect.x = 0
 
         else:
             move_background = False
@@ -341,6 +348,15 @@ def game():
                 if player_y > screen_height - player_height:
                     player_y = screen_height - player_height
                     player_obj.rect.y = screen_height - player_height
+        if player_y < screen_height // 4:
+            if background_y > - screen_height:
+                player_y = screen_height // 4
+                player_obj.rect.y = screen_height // 4
+                move_background = True
+            elif background_y <= - screen_height:
+                background_y = - screen_height
+
+
 
         all_sprites_list.update()
 
