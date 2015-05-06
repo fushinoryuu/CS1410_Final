@@ -4,7 +4,7 @@ import pyganim
 from pygame.locals import *
 from game_interface import GameInterface
 from bullet import Bullet, downBullet, leftBullet, rightBullet
-from enemy_class import Enemy, Crate
+from collidable import Enemy, Crate, Goal
 
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
@@ -75,6 +75,7 @@ def game():
 
     move_conductor = pyganim.PygConductor(animation_objects)
     crate_conductor = pyganim.PygConductor(crate_animations)
+    #goal_conductor = pyganim.PygConductor(goal_animations)
     #enemy_conductor = pyganim.PygConductor(enemy_objects)
 
     # The player's default on spawn is facing down.
