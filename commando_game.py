@@ -13,7 +13,9 @@ game_interface = GameInterface()
 click_start = pygame.mixer.Sound('sound/DoubleGunshot.wav')
 walking = pygame.mixer.Sound('sound/Walking.wav')
 gunshot = pygame.mixer.Sound('sound/Gunshot.wav')
+deathsound = pygame.mixer.Sound('sound/deathsound.wav')
 menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
+deathsound.set_volume(.8)
 gunshot.set_volume(.5)
 walking.set_volume(.8)
 click_start.set_volume(1)
@@ -296,6 +298,7 @@ def game():
             for enemy in enemy_hit_list:
                 bullet_list.remove(bullet)
                 all_sprites_list.remove(bullet)
+                deathsound.play()
 
             # Remove the bullet if it flies out of the screen
             if bullet.rect.y < -10 or bullet.rect.y > 500 or bullet.rect.x < -10 or bullet.rect.x > 650:
