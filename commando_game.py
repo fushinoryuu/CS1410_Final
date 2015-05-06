@@ -1,6 +1,7 @@
 import pygame
 import sys
 import pyganim
+import random
 from pygame.locals import *
 from game_interface import GameInterface
 from bullet import Bullet, downBullet, leftBullet, rightBullet
@@ -126,7 +127,6 @@ def game():
         goal_animations[animType] = pyganim.PygAnimation(images_and_durations)
 
     move_conductor = pyganim.PygConductor(animation_objects)
-    crate_conductor = pyganim.PygConductor(crate_animations)
     goal_conductor = pyganim.PygConductor(goal_animations)
     #enemy_conductor = pyganim.PygConductor(enemy_objects)
 
@@ -140,8 +140,8 @@ def game():
     walk_rate = 6
     run_rate = 12
 
-    background_x = 0
-    background_y = 0
+    background_x = -100
+    background_y = -100
     move_background = False
 
     running = move_up = move_down = move_left = move_right = False
@@ -153,17 +153,125 @@ def game():
     goal_list = pygame.sprite.Group()
     player_list = pygame.sprite.Group()
 
-    enemy_obj = Enemy()
-    enemy_obj.rect.x = 100
-    enemy_obj.rect.y = 100
-    enemy_list.add(enemy_obj)
-    all_sprites_list.add(enemy_obj)
+    enemy_1 = Enemy()
+    enemy_1.rect.x = random.randrange(0, 1500)
+    enemy_1.rect.y = random.randrange(0, 2000)
+    enemy_list.add(enemy_1)
+    all_sprites_list.add(enemy_1)
 
-    crate_obj = Crate()
-    crate_obj.rect.x = 200
-    crate_obj.rect.y = 200
-    crate_list.add(crate_obj)
-    all_sprites_list.add(crate_obj)
+    enemy_2 = Enemy()
+    enemy_2.rect.x = random.randrange(0, 1500)
+    enemy_2.rect.y = random.randrange(0, 2000)
+    enemy_list.add(enemy_2)
+    all_sprites_list.add(enemy_2)
+
+    enemy_3 = Enemy()
+    enemy_3.rect.x = random.randrange(0, 1500)
+    enemy_3.rect.y = random.randrange(0, 2000)
+    enemy_list.add(enemy_3)
+    all_sprites_list.add(enemy_3)
+
+    enemy_4 = Enemy()
+    enemy_4.rect.x = random.randrange(0, 1500)
+    enemy_4.rect.y = random.randrange(0, 2000)
+    enemy_list.add(enemy_4)
+    all_sprites_list.add(enemy_4)
+
+    enemy_5 = Enemy()
+    enemy_5.rect.x = random.randrange(0, 1500)
+    enemy_5.rect.y = random.randrange(0, 2000)
+    enemy_list.add(enemy_5)
+    all_sprites_list.add(enemy_5)
+
+    enemy_6 = Enemy()
+    enemy_6.rect.x = random.randrange(0, 1500)
+    enemy_6.rect.y = random.randrange(0, 2000)
+    enemy_list.add(enemy_6)
+    all_sprites_list.add(enemy_6)
+
+    enemy_7 = Enemy()
+    enemy_7.rect.x = random.randrange(0, 1500)
+    enemy_7.rect.y = random.randrange(0, 2000)
+    enemy_list.add(enemy_7)
+    all_sprites_list.add(enemy_7)
+
+    enemy_8 = Enemy()
+    enemy_8.rect.x = random.randrange(0, 1500)
+    enemy_8.rect.y = random.randrange(0, 2000)
+    enemy_list.add(enemy_8)
+    all_sprites_list.add(enemy_8)
+
+    enemy_9 = Enemy()
+    enemy_9.rect.x = random.randrange(0, 1500)
+    enemy_9.rect.y = random.randrange(0, 2000)
+    enemy_list.add(enemy_9)
+    all_sprites_list.add(enemy_9)
+
+    enemy_10 = Enemy()
+    enemy_10.rect.x = random.randrange(0, 1500)
+    enemy_10.rect.y = random.randrange(0, 2000)
+    enemy_list.add(enemy_10)
+    all_sprites_list.add(enemy_10)
+
+    crate_1 = Crate()
+    crate_1.rect.x = random.randrange(0, 1500)
+    crate_1.rect.y = random.randrange(0, 2000)
+    crate_list.add(crate_1)
+    all_sprites_list.add(crate_1)
+
+    crate_2 = Crate()
+    crate_2.rect.x = random.randrange(0, 1500)
+    crate_2.rect.y = random.randrange(0, 2000)
+    crate_list.add(crate_2)
+    all_sprites_list.add(crate_2)
+
+    crate_3 = Crate()
+    crate_3.rect.x = random.randrange(0, 1500)
+    crate_3.rect.y = random.randrange(0, 2000)
+    crate_list.add(crate_3)
+    all_sprites_list.add(crate_3)
+
+    crate_4 = Crate()
+    crate_4.rect.x = random.randrange(0, 1500)
+    crate_4.rect.y = random.randrange(0, 2000)
+    crate_list.add(crate_4)
+    all_sprites_list.add(crate_4)
+
+    crate_5 = Crate()
+    crate_5.rect.x = random.randrange(0, 1500)
+    crate_5.rect.y = random.randrange(0, 2000)
+    crate_list.add(crate_5)
+    all_sprites_list.add(crate_5)
+
+    crate_6 = Crate()
+    crate_6.rect.x = random.randrange(0, 1500)
+    crate_6.rect.y = random.randrange(0, 2000)
+    crate_list.add(crate_6)
+    all_sprites_list.add(crate_6)
+
+    crate_7 = Crate()
+    crate_7.rect.x = random.randrange(0, 1500)
+    crate_7.rect.y = random.randrange(0, 2000)
+    crate_list.add(crate_7)
+    all_sprites_list.add(crate_7)
+
+    crate_8 = Crate()
+    crate_8.rect.x = random.randrange(0, 1500)
+    crate_8.rect.y = random.randrange(0, 2000)
+    crate_list.add(crate_8)
+    all_sprites_list.add(crate_8)
+
+    crate_9 = Crate()
+    crate_9.rect.x = random.randrange(0, 1500)
+    crate_9.rect.y = random.randrange(0, 2000)
+    crate_list.add(crate_9)
+    all_sprites_list.add(crate_9)
+
+    crate_10 = Crate()
+    crate_10.rect.x = random.randrange(0, 1500)
+    crate_10.rect.y = random.randrange(0, 2000)
+    crate_list.add(crate_10)
+    all_sprites_list.add(crate_10)
 
     goal_obj = Goal()
     goal_obj.rect.x = 800
@@ -321,25 +429,108 @@ def game():
                 if move_background:
                     background_y += rate
                     goal_obj.rect.y += rate
+                    enemy_1.rect.y += rate
+                    enemy_2.rect.y += rate
+                    enemy_3.rect.y += rate
+                    enemy_4.rect.y += rate
+                    enemy_5.rect.y += rate
+                    enemy_6.rect.y += rate
+                    enemy_7.rect.y += rate
+                    enemy_8.rect.y += rate
+                    enemy_9.rect.y += rate
+                    enemy_10.rect.y += rate
+
+                    crate_1.rect.y += rate
+                    crate_2.rect.y += rate
+                    crate_3.rect.y += rate
+                    crate_4.rect.y += rate
+                    crate_5.rect.y += rate
+                    crate_6.rect.y += rate
+                    crate_7.rect.y += rate
+                    crate_8.rect.y += rate
+                    crate_9.rect.y += rate
+                    crate_10.rect.y += rate
             if move_down:
                 player_y += rate
                 player_obj.rect.y += rate
                 if move_background:
                     background_y -= rate
                     goal_obj.rect.y -= rate
+                    enemy_1.rect.y -= rate
+                    enemy_2.rect.y -= rate
+                    enemy_3.rect.y -= rate
+                    enemy_4.rect.y -= rate
+                    enemy_5.rect.y -= rate
+                    enemy_6.rect.y -= rate
+                    enemy_7.rect.y -= rate
+                    enemy_8.rect.y -= rate
+                    enemy_9.rect.y -= rate
+                    enemy_10.rect.y -= rate
+
+                    crate_1.rect.y -= rate
+                    crate_2.rect.y -= rate
+                    crate_3.rect.y -= rate
+                    crate_4.rect.y -= rate
+                    crate_5.rect.y -= rate
+                    crate_6.rect.y -= rate
+                    crate_7.rect.y -= rate
+                    crate_8.rect.y -= rate
+                    crate_9.rect.y -= rate
+                    crate_10.rect.y -= rate
             if move_left:
                 player_x -= rate
                 player_obj.rect.x -= rate
                 if move_background:
                     background_x += rate
                     goal_obj.rect.x += rate
+                    enemy_1.rect.x += rate
+                    enemy_2.rect.x += rate
+                    enemy_3.rect.x += rate
+                    enemy_4.rect.x += rate
+                    enemy_5.rect.x += rate
+                    enemy_6.rect.x += rate
+                    enemy_7.rect.x += rate
+                    enemy_8.rect.x += rate
+                    enemy_9.rect.x += rate
+                    enemy_10.rect.x += rate
+
+                    crate_1.rect.x += rate
+                    crate_2.rect.x += rate
+                    crate_3.rect.x += rate
+                    crate_4.rect.x += rate
+                    crate_5.rect.x += rate
+                    crate_6.rect.x += rate
+                    crate_7.rect.x += rate
+                    crate_8.rect.x += rate
+                    crate_9.rect.x += rate
+                    crate_10.rect.x += rate
             if move_right:
                 player_x += rate
                 player_obj.rect.x += rate
                 if move_background:
                     background_x -= rate
                     goal_obj.rect.x -= rate
+                    enemy_1.rect.x -= rate
+                    enemy_2.rect.x -= rate
+                    enemy_3.rect.x -= rate
+                    enemy_4.rect.x -= rate
+                    enemy_5.rect.x -= rate
+                    enemy_6.rect.x -= rate
+                    enemy_7.rect.x -= rate
+                    enemy_8.rect.x -= rate
+                    enemy_9.rect.x -= rate
+                    enemy_10.rect.x -= rate
 
+                    crate_1.rect.x -= rate
+                    crate_2.rect.x -= rate
+                    crate_3.rect.x -= rate
+                    crate_4.rect.x -= rate
+                    crate_5.rect.x -= rate
+                    crate_6.rect.x -= rate
+                    crate_7.rect.x -= rate
+                    crate_8.rect.x -= rate
+                    crate_9.rect.x -= rate
+                    crate_10.rect.x -= rate
         else:
             # Standing still.
             move_conductor.stop()
@@ -417,9 +608,6 @@ def game():
                 bullet_list.remove(bullet)
                 all_sprites_list.remove(bullet)
                 game_interface.score += 5
-                crate_conductor.play()
-                crate_animations['break'].blit(display_surface, (crate_obj.rect.x, crate_obj.rect.y))
-                crate_conductor.stop()
 
             # Remove the bullet if it flies out of the screen
             if bullet.rect.y < -10 or bullet.rect.y > 500 or bullet.rect.x < -10 or bullet.rect.x > 650:
