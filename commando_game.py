@@ -4,7 +4,7 @@ import pyganim
 from pygame.locals import *
 from game_interface import GameInterface
 from random import *
-from bullet import Bullet
+from bullet import Bullet,downBullet,leftBullet,rightBullet
 
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
@@ -33,9 +33,9 @@ def game():
     background_game = pygame.image.load('gameimages/crackeddirt.png')
 
     # Load the player sprites
-    front_standing = pygame.image.load('gameimages/player/crono_front.gif')
-    back_standing = pygame.image.load('gameimages/player/crono_back.gif')
-    left_standing = pygame.image.load('gameimages/player/crono_left.gif')
+    front_standing = pygame.image.load('gameimages/player/soldier_front.png')
+    back_standing = pygame.image.load('gameimages/player/soldierBack.png')
+    left_standing = pygame.image.load('gameimages/player/soldier_left.png')
     right_standing = pygame.transform.flip(left_standing, True, False)
     player_width, player_height = front_standing.get_size()
 
@@ -44,11 +44,11 @@ def game():
     enemy_left = pygame.image.load('gameimages/enemies/enemy_front.gif')
 
     # Create the PygAnim objects for walking/running in all directions
-    animation_types = 'back_run back_walk front_run front_walk left_run left_walk'.split()
+    animation_types = 'back_walk front_walk left_walk'.split()
     animation_objects = {}
     for animType in animation_types:
-        images_and_durations = [('gameimages/player/crono_%s.%s.gif' %
-                                 (animType, str(num).rjust(3, '0')), 0.1) for num in range(6)]
+        images_and_durations = [('gameimages/player/soldier_%s.%s.png' %
+                                 (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
         animation_objects[animType] = pyganim.PygAnimation(images_and_durations)
 
     enemy_types = 'left_walk'.split()
@@ -62,9 +62,7 @@ def game():
     animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
     animation_objects['right_walk'].flip(True, False)
     animation_objects['right_walk'].makeTransformsPermanent()
-    animation_objects['right_run'] = animation_objects['left_run'].getCopy()
-    animation_objects['right_run'].flip(True, False)
-    animation_objects['right_run'].makeTransformsPermanent()
+
 
     move_conductor = pyganim.PygConductor(animation_objects)
     enemy_conductor = pyganim.PygConductor(enemy_objects)
@@ -76,7 +74,7 @@ def game():
     player_x = 300
     player_y = 200
 
-    walk_rate = 4
+    walk_rate = 6
     run_rate = 12
 
     enemy_x = 100
@@ -140,11 +138,30 @@ def game():
                     if not move_up and not move_down:
                         direction = right
                 elif event.key == K_SPACE:
-                    bullet = Bullet()
-                    bullet.rect.x = player_x
-                    bullet.rect.y = player_y
-                    all_sprites_list.add(bullet)
-                    bullet.update()
+                    if direction == up:
+                        bullet = Bullet()
+                        bullet.rect.x = (player_x + 25)
+                        bullet.rect.y = player_y
+                        all_sprites_list.add(bullet)
+                        bullet_list.add(bullet)
+                    if direction == down:
+                        bullet = downBullet()
+                        bullet.rect.x = (player_x + 25)
+                        bullet.rect.y = (player_y + 30)
+                        all_sprites_list.add(bullet)
+                        bullet_list.add(bullet)
+                    if direction == left:
+                        bullet = leftBullet()
+                        bullet.rect.x = (player_x + 25)
+                        bullet.rect.y = (player_y + 30)
+                        all_sprites_list.add(bullet)
+                        bullet_list.add(bullet)
+                    if direction == right:
+                        bullet = rightBullet()
+                        bullet.rect.x = (player_x + 25)
+                        bullet.rect.y = (player_y + 30)
+                        all_sprites_list.add(bullet)
+                        bullet_list.add(bullet)
 
             elif event.type == KEYUP:
                 if event.key in (K_LSHIFT, K_RSHIFT):
@@ -182,6 +199,12 @@ def game():
                         direction = up
                     if move_down:
                         direction = down
+
+        for bullet in bullet_list:
+            if bullet.rect.y < -10 or bullet.rect.y > 500 or bullet.rect.x < -10 or bullet.rect.x > 650:
+                print('off screen')
+                bullet_list.remove(bullet)
+                all_sprites_list.remove(bullet)
 
         if move_up or move_down or move_left or move_right:
             # Draw the correct walking/running sprite from animation object
