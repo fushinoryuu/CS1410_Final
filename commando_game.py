@@ -95,7 +95,9 @@ def game():
     bullet_list = pygame.sprite.Group()
     enemy_list = pygame.sprite.Group()
 
-    enemy_obj = Enemy((0, 0), display_surface)
+    enemy_obj = Enemy(display_surface)
+    enemy_obj.rect.x = enemy_x
+    enemy_obj.rect.y = enemy_y
     enemy_list.add(enemy_obj)
     all_sprites_list.add(enemy_obj)
 
