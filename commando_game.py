@@ -31,7 +31,7 @@ def game():
     pygame.display.set_caption('Commando!')
 
     # Load images
-    background_game = pygame.image.load('gameimages/longBG.png')
+    background_game = pygame.image.load('gameimages/asphaltBG.bmp')
 
     # This is the purple and orange square information for collision in the game.
     enemy_amount = 10

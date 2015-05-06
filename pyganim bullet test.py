@@ -127,13 +127,13 @@ mainClock = pygame.time.Clock()
 x = 300 # x and y are the player's position
 y = 400
 WALKRATE = 6
-RUNRATE = 12
+#RUNRATE = 12
 
 xBG = 0
 yBG = 0
 moveBG = False
 
-running = moveUp = moveDown = moveLeft = moveRight = False
+#running = moveUp = moveDown = moveLeft = moveRight = False
 
 all_sprites_list = pygame.sprite.Group()
 bullet_list = pygame.sprite.Group()
@@ -152,9 +152,9 @@ while True:
                 pygame.quit()
                 sys.exit()
 
-            if event.key in (K_LSHIFT, K_RSHIFT):
+            #if event.key in (K_LSHIFT, K_RSHIFT):
                 # player has started running
-                running = True
+             #   running = True
 
             if event.key == K_UP:
                 moveUp = True
@@ -206,13 +206,10 @@ while True:
 
 
 
-
-
-
         elif event.type == KEYUP:
-            if event.key in (K_LSHIFT, K_RSHIFT):
+            #if event.key in (K_LSHIFT, K_RSHIFT):
                 # player has stopped running
-                running = False
+             #   running = False
 
             if event.key == K_UP:
                 moveUp = False
