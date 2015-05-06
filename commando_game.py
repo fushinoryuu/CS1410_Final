@@ -80,8 +80,8 @@ def game():
     walk_rate = 6
     run_rate = 12
 
-    """enemy_x = 100
-    enemy_y = 100"""
+    enemy_x = 100
+    enemy_y = 100
 
     background_x = 0
     background_y = 0
@@ -93,17 +93,14 @@ def game():
     bullet_list = pygame.sprite.Group()
     enemy_list = pygame.sprite.Group()
 
-    enemy = Enemy((400, 100), display_surface)
-    enemy_list.add(enemy)
-    all_sprites_list.add(enemy)
+    enemy_obj = Enemy((0, 0), display_surface)
+    enemy_list.add(enemy_obj)
+    all_sprites_list.add(enemy_obj)
 
     while True:
         display_surface.blit(background_game, (background_x, background_y))
-        """enemy_conductor.play()
-        enemy_objects['left_walk'].blit(display_surface, (enemy_x, enemy_y))"""
 
         for event in pygame.event.get():
-
 
             # Will handle exiting the program.
             if event.type == QUIT:
@@ -114,12 +111,11 @@ def game():
                     pygame.quit()
                     sys.exit()
 
-                if event.key == K_RETURN:
+                # Restarts the game if the player press the Enter key.
+                elif event.key == K_RETURN:
                     main()
 
-
-
-                if event.key == K_UP:
+                elif event.key == K_UP:
                     move_up = True
                     move_down = False
                     walking.play()
@@ -204,12 +200,6 @@ def game():
                         direction = up
                     if move_down:
                         direction = down
-
-        for bullet in bullet_list:
-            if bullet.rect.y < -10 or bullet.rect.y > 500 or bullet.rect.x < -10 or bullet.rect.x > 650:
-                print('off screen')
-                bullet_list.remove(bullet)
-                all_sprites_list.remove(bullet)
 
         if move_up or move_down or move_left or move_right:
             # Draw the correct walking/running sprite from animation object
@@ -297,12 +287,26 @@ def game():
                     player_y = screen_height - player_height
 
         all_sprites_list.update()
+
+        for bullet in bullet_list:
+            # See if it hit an enemy
+            enemy_hit_list = pygame.sprite.spritecollide(bullet, enemy_list, True)
+
+            # For each enemy hit, remove the bullet
+            for enemy in enemy_hit_list:
+                bullet_list.remove(bullet)
+                all_sprites_list.remove(bullet)
+
+            # Remove the bullet if it flies out of the screen
+            if bullet.rect.y < -10 or bullet.rect.y > 500 or bullet.rect.x < -10 or bullet.rect.x > 650:
+                print('off screen')
+                bullet_list.remove(bullet)
+                all_sprites_list.remove(bullet)
+
         all_sprites_list.draw(display_surface)
-        print(player_x, player_y)
+
         pygame.display.update()
 
-        # Collision variable(Makes the Orange square collide with the Purple ones)
-        #squaresHITlist = pygame.sprite.spritecollide(player, squareList, True)
         clock.tick(30)
 
 
