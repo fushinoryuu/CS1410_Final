@@ -28,18 +28,18 @@ class GameInterface:
         self.yellow = (192, 150, 24)
         self.background_color = (0, 147, 134)
 
-        button_width = self.display_width//5
-        button_height = button_width//4
-        button_x = self.display_width//2 - button_width//2
-        button_y = self.display_height//2 - button_height//2 + 150
-        button_position = (button_x, button_y)
+        self.button_width = self.display_width//5
+        self.button_height = self.button_width//4
+        self.button_x = self.display_width//2 - self.button_width//2
+        self.button_y = self.display_height//2 - self.button_height//2 + 150
+        self.button_position = (self.button_x, self.button_y)
 
-        self.start_button = SimpleButton(button_width, button_height, self.orange, self.grey, "Start Game",
-                                         self.display_surface, button_position)
-        self.quit_button = SimpleButton(button_width, button_height, self.orange, self.grey, "Quit Game",
-                                         self.display_surface, (button_x + 160, button_y))
-        self.credits_button = SimpleButton(button_width, button_height, self.orange, self.grey, "Credits",
-                                         self.display_surface, (button_x - 160, button_y))
+        self.start_button = SimpleButton(self.button_width, self.button_height, self.orange, self.grey, "Start Game",
+                                         self.display_surface, self.button_position)
+        self.quit_button = SimpleButton(self.button_width, self.button_height, self.orange, self.grey, "Quit Game",
+                                         self.display_surface, (self.button_x + 160, self.button_y))
+        self.credits_button = SimpleButton(self.button_width, self.button_height, self.orange, self.grey, "Credits",
+                                         self.display_surface, (self.button_x - 160, self.button_y))
         self.button_list = [self.start_button, self.quit_button, self.credits_button]
 
         self.game_font = pygame.font.SysFont("Arial", 100)
@@ -62,6 +62,9 @@ class GameInterface:
                 x.display_highlighted()
 
     def display_interface(self):
+        self.start_button.change_position(self.button_position[0], self.button_position[1])
+        self.credits_button.change_position(self.button_x - 160, self.button_y)
+        self.quit_button.change_position(self.button_x + 160, self.button_y)
         if self.status == 0:
             self.display_surface.blit(self.background_mainmenu, (0, 0))
             self.display_all_buttons()
@@ -93,4 +96,6 @@ class GameInterface:
         self.all_buttons_inactive()
         self.start_button.active = True
         self.quit_button.active = True
+        self.start_button.change_position(self.display_width//2 - 200, self.display_height//2 + 100)
+        self.quit_button.change_position(self.display_width//2 + 100, self.display_height//2 + 100)
         self.display_all_buttons()

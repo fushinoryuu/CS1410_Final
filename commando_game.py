@@ -140,7 +140,7 @@ def game():
     walk_rate = 6
     run_rate = 12
 
-    background_x = - 200
+    background_x = 0
     background_y = 0
     move_background = False
 
@@ -166,7 +166,7 @@ def game():
     all_sprites_list.add(crate_obj)
 
     goal_obj = Goal()
-    goal_obj.rect.x = 300
+    goal_obj.rect.x = 800
     goal_obj.rect.y = 800
     goal_list.add(goal_obj)
     all_sprites_list.add(goal_obj)
@@ -332,11 +332,13 @@ def game():
                 player_obj.rect.x -= rate
                 if move_background:
                     background_x += rate
+                    goal_obj.rect.x += rate
             if move_right:
                 player_x += rate
                 player_obj.rect.x += rate
                 if move_background:
                     background_x -= rate
+                    goal_obj.rect.x -= rate
 
         else:
             # Standing still.
@@ -352,10 +354,10 @@ def game():
 
         # Make sure the player does move off the screen
 
-        if player_x > screen_width - screen_width // 3:
+        if player_x > screen_width - (screen_width // 3):
             if background_x > - screen_width:
-                player_x = screen_width - screen_width // 3
-                player_obj.rect.x = screen_width - screen_width // 3
+                player_x = screen_width - (screen_width // 3)
+                player_obj.rect.x = screen_width - (screen_width // 3)
                 move_background = True
             elif background_x <= - screen_width:
                 background_x = - screen_width
@@ -363,11 +365,11 @@ def game():
                     player_x = screen_width - player_width
                     player_obj.rect.x = screen_width - player_width
         elif player_x < screen_width//4:
-            if background_x < -player_obj.rect.x:
-                player_x =  screen_width//4
+            if background_x < - player_obj.rect.x:
+                player_x = screen_width//4
                 move_background = True
             elif background_x < - player_obj.rect.x:
-                background_x =  player_obj.rect.x
+                background_x = player_obj.rect.x
                 if player_x < 0:
                     player_x = 0
                     player_obj.rect.x = 0
@@ -395,8 +397,6 @@ def game():
                 move_background = True
             elif background_y <= - screen_height:
                 background_y = - screen_height
-
-
 
         all_sprites_list.update()
 
