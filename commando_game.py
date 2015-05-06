@@ -4,7 +4,7 @@ import pyganim
 from pygame.locals import *
 from game_interface import GameInterface
 from bullet import Bullet, downBullet, leftBullet, rightBullet
-from collidable import Enemy, Crate, Goal
+from collidable import Enemy, Crate, Goal, Player
 
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
@@ -23,7 +23,7 @@ click_start.set_volume(1)
 pygame.mixer.music.set_volume(.07)
 
 def end():
-    pass
+    print('hi')
 
 def game():
     # Define controls
@@ -113,6 +113,7 @@ def game():
     enemy_list = pygame.sprite.Group()
     crate_list = pygame.sprite.Group()
     goal_list = pygame.sprite.Group()
+    player_list = pygame.sprite.Group()
 
     enemy_obj = Enemy()
     enemy_obj.rect.x = 100
@@ -127,10 +128,17 @@ def game():
     all_sprites_list.add(crate_obj)
 
     goal_obj = Goal()
-    goal_obj.rect.x = 500
-    goal_obj.rect.y = 500
+    goal_obj.rect.x = 300
+    goal_obj.rect.y = 300
     goal_list.add(goal_obj)
     all_sprites_list.add(goal_obj)
+
+    player_obj = Player()
+    player_obj.rect.x = player_x
+    player_obj.rect.y = player_y
+    player_list.add(player_obj)
+    all_sprites_list.add(player_list)
+
 
     while True:
         display_surface.blit(background_game, (background_x, background_y))
@@ -269,18 +277,22 @@ def game():
 
             if move_up:
                 player_y -= rate
+                player_obj.rect.y  -= rate
                 if move_background:
                     background_y += rate
             if move_down:
                 player_y += rate
+                player_obj.rect.y += rate
                 if move_background:
                     background_y -= rate
             if move_left:
                 player_x -= rate
+                player_obj.rect.x -= rate
                 if move_background:
                     background_x += rate
             if move_right:
                 player_x += rate
+                player_obj.rect.x += rate
                 if move_background:
                     background_x -= rate
 
@@ -299,28 +311,34 @@ def game():
         # Make sure the player does move off the screen
         if player_x < 0:
             player_x = 0
+            player_obj.rect.x = 0
         if player_x > screen_width - screen_width // 3:
             if background_x > - screen_width:
                 player_x = screen_width - screen_width // 3
+                player_obj.rect.x = screen_width - screen_width // 3
                 move_background = True
             elif background_x <= - screen_width:
                 background_x = - screen_width
                 if player_x > screen_width - player_width:
                     player_x = screen_width - player_width
+                    player_obj.rect.x = screen_width - player_width
 
         else:
             move_background = False
 
         if player_y < 0:
             player_y = 0
+            player_obj.rect.y = 0
         if player_y > screen_height - screen_height // 3:
             if background_y > - screen_height:
                 player_y = screen_height - screen_height // 3
+                player_obj.rect.y = screen_height - screen_height // 3
                 move_background = True
             elif background_y <= - screen_height:
                 background_y = - screen_height
                 if player_y > screen_height - player_height:
                     player_y = screen_height - player_height
+                    player_obj.rect.y = screen_height - player_height
 
         all_sprites_list.update()
 
@@ -350,6 +368,14 @@ def game():
                 print('off screen')
                 bullet_list.remove(bullet)
                 all_sprites_list.remove(bullet)
+
+        for player in player_list:
+            player_hit_list = pygame.sprite.spritecollide(player_obj, goal_list, True)
+
+            for i in player_hit_list:
+                player_list.remove(i)
+                all_sprites_list.remove(i)
+                end()
 
         all_sprites_list.draw(display_surface)
 
