@@ -22,6 +22,9 @@ walking.set_volume(.8)
 click_start.set_volume(1)
 pygame.mixer.music.set_volume(.07)
 
+def end():
+    pass
+
 def game():
     # Define controls
     up = 'up'
@@ -67,15 +70,26 @@ def game():
                                  (animType, str(num).rjust(3, '0')), .5) for num in range(2)]
         crate_animations[animType] = pyganim.PygAnimation(images_and_durations)
 
+    goal_types = 'goal'.split()
+    goal_animations = {}
+    for animType in goal_types:
+        images_and_durations = [('gameimages/player/helicopter_%s.%s.gif' %
+                                 (animType, str(num).rjust(3, '0')), .5) for num in range(5)]
+        goal_animations[animType] = pyganim.PygAnimation(images_and_durations)
+
     # Creates the right-facing sprites by copying the left ones.
     animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
     animation_objects['right_walk'].flip(True, False)
     animation_objects['right_walk'].makeTransformsPermanent()
 
+    # Creates the right-facing sprites by copying the left ones.
+    animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
+    animation_objects['right_walk'].flip(True, False)
+    animation_objects['right_walk'].makeTransformsPermanent()
 
     move_conductor = pyganim.PygConductor(animation_objects)
     crate_conductor = pyganim.PygConductor(crate_animations)
-    #goal_conductor = pyganim.PygConductor(goal_animations)
+    goal_conductor = pyganim.PygConductor(goal_animations)
     #enemy_conductor = pyganim.PygConductor(enemy_objects)
 
     # The player's default on spawn is facing down.
@@ -88,9 +102,6 @@ def game():
     walk_rate = 6
     run_rate = 12
 
-    enemy_x = 100
-    enemy_y = 100
-
     background_x = 0
     background_y = 0
     move_background = False
@@ -101,10 +112,11 @@ def game():
     bullet_list = pygame.sprite.Group()
     enemy_list = pygame.sprite.Group()
     crate_list = pygame.sprite.Group()
+    goal_list = pygame.sprite.Group()
 
     enemy_obj = Enemy()
-    enemy_obj.rect.x = enemy_x
-    enemy_obj.rect.y = enemy_y
+    enemy_obj.rect.x = 100
+    enemy_obj.rect.y = 100
     enemy_list.add(enemy_obj)
     all_sprites_list.add(enemy_obj)
 
@@ -113,6 +125,12 @@ def game():
     crate_obj.rect.y = 200
     crate_list.add(crate_obj)
     all_sprites_list.add(crate_obj)
+
+    goal_obj = Goal()
+    goal_obj.rect.x = 500
+    goal_obj.rect.y = 500
+    goal_list.add(goal_obj)
+    all_sprites_list.add(goal_obj)
 
     while True:
         display_surface.blit(background_game, (background_x, background_y))

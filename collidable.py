@@ -26,3 +26,10 @@ class Goal(pygame.sprite.Sprite):
 
         self.image = pygame.image.load('gameimages/player/helicopter_hitbox.gif')
         self.rect = self.image.get_rect()
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Player, self).__init__()
+
+        self.image = pygame.image.load('gameimages/player/player_hitbox.gif')
+        self.rect = self.image.get_rect()
