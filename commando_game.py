@@ -3,8 +3,9 @@ import sys
 import pyganim
 from pygame.locals import *
 from game_interface import GameInterface
-from random import *
-from bullet import Bullet,downBullet,leftBullet,rightBullet
+from random import randint
+from bullet import Bullet, downBullet, leftBullet, rightBullet
+from enemy_class import Enemy
 
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
@@ -41,7 +42,7 @@ def game():
 
 
     # Load the enemy sprites
-    enemy_left = pygame.image.load('gameimages/enemies/enemy_front.gif')
+    #enemy_left = pygame.image.load('gameimages/enemies/enemy_front.gif')
 
     # Create the PygAnim objects for walking/running in all directions
     animation_types = 'back_walk front_walk left_walk'.split()
@@ -51,12 +52,12 @@ def game():
                                  (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
         animation_objects[animType] = pyganim.PygAnimation(images_and_durations)
 
-    enemy_types = 'left_walk'.split()
+    """enemy_types = 'left_walk'.split()
     enemy_objects = {}
     for animType in enemy_types:
         images_and_durations = [('gameimages/enemies/enemy_%s.%s.gif' %
                                  (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
-        enemy_objects[animType] = pyganim.PygAnimation(images_and_durations)
+        enemy_objects[animType] = pyganim.PygAnimation(images_and_durations)"""
 
     # Creates the right-facing sprites by copying the left ones.
     animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
@@ -65,7 +66,7 @@ def game():
 
 
     move_conductor = pyganim.PygConductor(animation_objects)
-    enemy_conductor = pyganim.PygConductor(enemy_objects)
+    #enemy_conductor = pyganim.PygConductor(enemy_objects)
 
     # The player's default on spawn is facing down.
     direction = down
@@ -77,8 +78,8 @@ def game():
     walk_rate = 6
     run_rate = 12
 
-    enemy_x = 100
-    enemy_y = 100
+    """enemy_x = 100
+    enemy_y = 100"""
 
     background_x = 0
     background_y = 0
@@ -88,11 +89,16 @@ def game():
 
     all_sprites_list = pygame.sprite.Group()
     bullet_list = pygame.sprite.Group()
+    enemy_list = pygame.sprite.Group()
+
+    enemy = Enemy((400, 100), display_surface)
+    enemy_list.add(enemy)
+    all_sprites_list.add(enemy)
 
     while True:
         display_surface.blit(background_game, (background_x, background_y))
-        enemy_conductor.play()
-        enemy_objects['left_walk'].blit(display_surface, (enemy_x, enemy_y))
+        """enemy_conductor.play()
+        enemy_objects['left_walk'].blit(display_surface, (enemy_x, enemy_y))"""
 
         for event in pygame.event.get():
 

@@ -29,9 +29,6 @@ class downBullet(pygame.sprite.Sprite):
         """ Move the bullet. """
         self.rect.y += 7
 
-    def test(self):
-        pass
-
 class leftBullet(pygame.sprite.Sprite):
     def __init__(self):
         # Call the parent class (Sprite) constructor
@@ -46,8 +43,6 @@ class leftBullet(pygame.sprite.Sprite):
         """ Move the bullet. """
         self.rect.x -= 7
 
-    def test(self):
-        pass
 class rightBullet(pygame.sprite.Sprite):
     def __init__(self):
         # Call the parent class (Sprite) constructor
@@ -61,6 +56,3 @@ class rightBullet(pygame.sprite.Sprite):
     def update(self):
         """ Move the bullet. """
         self.rect.x += 7
-
-    def test(self):
-        pass
