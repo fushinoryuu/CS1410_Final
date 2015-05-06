@@ -95,12 +95,12 @@ def game():
                                  (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
         animation_objects[animType] = pyganim.PygAnimation(images_and_durations)
 
-    """enemy_types = 'left_walk'.split()
+    enemy_types = 'front_walk'.split()
     enemy_objects = {}
     for animType in enemy_types:
         images_and_durations = [('gameimages/enemies/enemy_%s.%s.gif' %
                                  (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
-        enemy_objects[animType] = pyganim.PygAnimation(images_and_durations)"""
+        enemy_objects[animType] = pyganim.PygAnimation(images_and_durations)
 
     # Creates the right-facing sprites by copying the left ones.
     animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
@@ -128,7 +128,7 @@ def game():
 
     move_conductor = pyganim.PygConductor(animation_objects)
     goal_conductor = pyganim.PygConductor(goal_animations)
-    #enemy_conductor = pyganim.PygConductor(enemy_objects)
+    enemy_conductor = pyganim.PygConductor(enemy_objects)
 
     # The player's default on spawn is facing down.
     direction = down
@@ -291,6 +291,17 @@ def game():
         game_interface.score_board()
         goal_conductor.play()
         goal_animations['goal'].blit(display_surface, (goal_obj.rect.x, goal_obj.rect.y))
+        enemy_conductor.play()
+        enemy_objects['front_walk'].blit(display_surface, (enemy_1.rect.x, enemy_1.rect.y))
+        enemy_objects['front_walk'].blit(display_surface, (enemy_2.rect.x, enemy_2.rect.y))
+        enemy_objects['front_walk'].blit(display_surface, (enemy_3.rect.x, enemy_3.rect.y))
+        enemy_objects['front_walk'].blit(display_surface, (enemy_4.rect.x, enemy_4.rect.y))
+        enemy_objects['front_walk'].blit(display_surface, (enemy_5.rect.x, enemy_5.rect.y))
+        enemy_objects['front_walk'].blit(display_surface, (enemy_6.rect.x, enemy_6.rect.y))
+        enemy_objects['front_walk'].blit(display_surface, (enemy_7.rect.x, enemy_7.rect.y))
+        enemy_objects['front_walk'].blit(display_surface, (enemy_8.rect.x, enemy_8.rect.y))
+        enemy_objects['front_walk'].blit(display_surface, (enemy_9.rect.x, enemy_9.rect.y))
+        enemy_objects['front_walk'].blit(display_surface, (enemy_10.rect.x, enemy_10.rect.y))
 
         for event in pygame.event.get():
 

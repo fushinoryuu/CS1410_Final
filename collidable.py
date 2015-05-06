@@ -9,7 +9,7 @@ class Enemy(pygame.sprite.Sprite):
         # Call the parent class (Sprite) constructor
         super(Enemy, self).__init__()
 
-        self.image = pygame.image.load('gameimages/enemies/enemy_front.gif')
+        self.image = pygame.image.load('gameimages/enemies/enemy_hitbox.gif')
         self.rect = self.image.get_rect()
 
 class Crate(pygame.sprite.Sprite):
