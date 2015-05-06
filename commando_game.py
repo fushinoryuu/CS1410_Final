@@ -19,11 +19,52 @@ deathsound.set_volume(.5)
 breaksound.set_volume(1)
 gunshot.set_volume(.6)
 walking.set_volume(.8)
-click_start.set_volume(1)
+click_start.set_volume(.1)
 pygame.mixer.music.set_volume(.07)
 
 def end():
-    print('hi')
+    """This function runs the main menu for the game."""
+    game_interface.all_buttons_inactive()
+    pygame.mixer.music.stop()
+
+    while True:
+        for event in pygame.event.get():
+            game_interface.final()
+
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+
+            elif event.type == MOUSEBUTTONDOWN:
+                mouse_xy = pygame.mouse.get_pos()
+
+                if game_interface.start_button.clicked(mouse_xy):
+                    game_interface.start_button.highlighted = True
+                    click_start.play()
+                    pygame.mixer.music.play(-1)
+                elif game_interface.quit_button.clicked(mouse_xy):
+                    click_start.play()
+                    game_interface.quit_button.highlighted = True
+                # elif game_interface.credits_button.clicked(mouse_xy):
+                #     game_interface.credits_button.highlighted = True
+                #     click_start.play()
+
+            elif event.type == MOUSEBUTTONUP:
+                if game_interface.start_button.clicked(mouse_xy):
+                    game_interface.start_button.highlighted = False
+                    game()
+                elif game_interface.quit_button.clicked(mouse_xy):
+                    pygame.quit()
+                    sys.exit()
+                elif game_interface.credits_button.clicked(mouse_xy):
+                    game_interface.status = 1
+                    game_interface.credits_button.highlighted = False
+        game_interface.final()
+        pygame.display.update()
 
 def game():
     # Define controls
@@ -391,8 +432,6 @@ def game():
             player_hit_list = pygame.sprite.spritecollide(player_obj, goal_list, True)
 
             for i in player_hit_list:
-                player_list.remove(i)
-                all_sprites_list.remove(i)
                 end()
 
         all_sprites_list.draw(display_surface)

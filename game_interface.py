@@ -12,6 +12,7 @@ class GameInterface:
 
         self.background_mainmenu = pygame.image.load('gameimages/newmainmenuBG.png')
         self.background_credits = pygame.image.load('gameimages/credits.png')
+        self.background_end = pygame.image.load('gameimages/camouflage.png')
 
         self.display_surface = pygame.display.set_mode((self.display_width, self.display_height), 0, 32)
         pygame.display.set_caption('Commando Game')
@@ -72,16 +73,24 @@ class GameInterface:
         self.all_buttons_inactive()
         self.display_interface()
 
-    def display_score(self):
+    def display_score(self, ypos):
         score_string = "Player's Points: " + str(self.score)
         score_surface = self.game_font.render(score_string, True, self.white, None)
         score_surface = pygame.transform.scale(score_surface, (self.display_width - (self.display_width//3),
                                                                  self.display_height//10))
         w, h = score_surface.get_size()
         score_x = (self.display_width - w)//2
-        score_y = self.display_height - self.display_height//5
+        score_y = ypos
         self.display_surface.blit(score_surface, (score_x, score_y))
 
     def score_board(self):
         self.all_buttons_inactive()
-        self.display_score()
+        self.display_score(0)
+
+    def final(self):
+        self.display_surface.blit(self.background_end, (0, 0))
+        self.display_score(250)
+        self.all_buttons_inactive()
+        self.start_button.active = True
+        self.quit_button.active = True
+        self.display_all_buttons()
