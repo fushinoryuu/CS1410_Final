@@ -63,6 +63,16 @@ def game():
                                  (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
         enemy_objects[animType] = pyganim.PygAnimation(images_and_durations)"""
 
+    # Creates the right-facing sprites by copying the left ones.
+    animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
+    animation_objects['right_walk'].flip(True, False)
+    animation_objects['right_walk'].makeTransformsPermanent()
+
+    # Creates the right-facing sprites by copying the left ones.
+    animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
+    animation_objects['right_walk'].flip(True, False)
+    animation_objects['right_walk'].makeTransformsPermanent()
+
     crate_types = 'break'.split()
     crate_animations = {}
     for animType in crate_types:
@@ -74,18 +84,8 @@ def game():
     goal_animations = {}
     for animType in goal_types:
         images_and_durations = [('gameimages/player/helicopter_%s.%s.gif' %
-                                 (animType, str(num).rjust(3, '0')), .5) for num in range(5)]
+                                 (animType, str(num).rjust(3, '0')), .1) for num in range(5)]
         goal_animations[animType] = pyganim.PygAnimation(images_and_durations)
-
-    # Creates the right-facing sprites by copying the left ones.
-    animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
-    animation_objects['right_walk'].flip(True, False)
-    animation_objects['right_walk'].makeTransformsPermanent()
-
-    # Creates the right-facing sprites by copying the left ones.
-    animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
-    animation_objects['right_walk'].flip(True, False)
-    animation_objects['right_walk'].makeTransformsPermanent()
 
     move_conductor = pyganim.PygConductor(animation_objects)
     crate_conductor = pyganim.PygConductor(crate_animations)
@@ -143,6 +143,8 @@ def game():
     while True:
         display_surface.blit(background_game, (background_x, background_y))
         game_interface.score_board()
+        goal_conductor.play()
+        goal_animations['goal'].blit(display_surface, (goal_obj.rect.x, goal_obj.rect.y))
 
         for event in pygame.event.get():
 
