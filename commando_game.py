@@ -19,7 +19,7 @@ deathsound.set_volume(.5)
 breaksound.set_volume(1)
 gunshot.set_volume(.6)
 walking.set_volume(.8)
-click_start.set_volume(.1)
+click_start.set_volume(.2)
 pygame.mixer.music.set_volume(.07)
 
 def end():
@@ -49,9 +49,6 @@ def end():
                 elif game_interface.quit_button.clicked(mouse_xy):
                     click_start.play()
                     game_interface.quit_button.highlighted = True
-                # elif game_interface.credits_button.clicked(mouse_xy):
-                #     game_interface.credits_button.highlighted = True
-                #     click_start.play()
 
             elif event.type == MOUSEBUTTONUP:
                 if game_interface.start_button.clicked(mouse_xy):
@@ -143,7 +140,7 @@ def game():
     walk_rate = 6
     run_rate = 12
 
-    background_x = 0
+    background_x = - 200
     background_y = 0
     move_background = False
 
@@ -170,7 +167,7 @@ def game():
 
     goal_obj = Goal()
     goal_obj.rect.x = 300
-    goal_obj.rect.y = 300
+    goal_obj.rect.y = 800
     goal_list.add(goal_obj)
     all_sprites_list.add(goal_obj)
 
@@ -320,14 +317,16 @@ def game():
 
             if move_up:
                 player_y -= rate
-                player_obj.rect.y  -= rate
+                player_obj.rect.y -= rate
                 if move_background:
                     background_y += rate
+                    goal_obj.rect.y += rate
             if move_down:
                 player_y += rate
                 player_obj.rect.y += rate
                 if move_background:
                     background_y -= rate
+                    goal_obj.rect.y -= rate
             if move_left:
                 player_x -= rate
                 player_obj.rect.x -= rate
