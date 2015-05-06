@@ -109,8 +109,7 @@ def game():
                 if event.key == K_RETURN:
                     main()
 
-                if event.key in (K_LSHIFT, K_RSHIFT):
-                    running = True
+
 
                 if event.key == K_UP:
                     move_up = True
@@ -164,10 +163,7 @@ def game():
                         bullet_list.add(bullet)
 
             elif event.type == KEYUP:
-                if event.key in (K_LSHIFT, K_RSHIFT):
-                    # The player has stopped running.
-                    running = False
-                    walking.stop()
+
 
                 if event.key == K_UP:
                     move_up = False
