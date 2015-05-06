@@ -4,6 +4,8 @@ import sys
 import time
 import pyganim
 
+
+
 class Bullet(pygame.sprite.Sprite):
     """ This class represents the bullet . """
     def __init__(self):
@@ -18,6 +20,55 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         """ Move the bullet. """
         self.rect.y -= 7
+
+    def test(self):
+        pass
+class downBullet(pygame.sprite.Sprite):
+    def __init__(self):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        self.image = pygame.image.load('gameimages/player/bulletImage.png')
+        self.image = pygame.transform.flip(self.image, False, True)
+
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        """ Move the bullet. """
+        self.rect.y += 7
+
+    def test(self):
+        pass
+
+class leftBullet(pygame.sprite.Sprite):
+    def __init__(self):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        self.image = pygame.image.load('gameimages/player/bulletImage.png')
+        self.image = pygame.transform.rotate(self.image, +90)
+
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        """ Move the bullet. """
+        self.rect.x -= 7
+
+    def test(self):
+        pass
+class rightBullet(pygame.sprite.Sprite):
+    def __init__(self):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        self.image = pygame.image.load('gameimages/player/bulletImage.png')
+        self.image = pygame.transform.rotate(self.image, -90)
+
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        """ Move the bullet. """
+        self.rect.x += 7
 
     def test(self):
         pass
@@ -39,9 +90,9 @@ pygame.display.set_caption('Pyganim Test 4')
 longBGimage = pygame.image.load('gameimages/longBG.png')
 
 # load the "standing" sprites (these are single images, not animations)
-front_standing = pygame.image.load('gameimages/player/soldierFront.png')
+front_standing = pygame.image.load('gameimages/player/soldier_front.png')
 back_standing = pygame.image.load('gameimages/player/soldierBack.png')
-left_standing = pygame.image.load('gameimages/player/soldierLeft.png')
+left_standing = pygame.image.load('gameimages/player/soldier_left.png')
 right_standing = pygame.transform.flip(left_standing, True, False)
 
 playerWidth, playerHeight = front_standing.get_size()
@@ -75,7 +126,7 @@ BLACK = (0, 0, 0)
 mainClock = pygame.time.Clock()
 x = 300 # x and y are the player's position
 y = 400
-WALKRATE = 4
+WALKRATE = 6
 RUNRATE = 12
 
 xBG = 0
@@ -128,11 +179,35 @@ while True:
                     direction = RIGHT
 
             elif event.key == K_SPACE:
-                bullet = Bullet()
-                bullet.rect.x = x
-                bullet.rect.y = y
-                all_sprites_list.add(bullet)
-                bullet.update()
+                if direction == UP:
+                    bullet = Bullet()
+                    bullet.rect.x = (x + 25)
+                    bullet.rect.y = y
+                    all_sprites_list.add(bullet)
+                    bullet_list.add(bullet)
+                if direction == DOWN:
+                    bullet = downBullet()
+                    bullet.rect.x = (x + 25)
+                    bullet.rect.y = (y + 30)
+                    all_sprites_list.add(bullet)
+                    bullet_list.add(bullet)
+                if direction == LEFT:
+                    bullet = leftBullet()
+                    bullet.rect.x = (x + 25)
+                    bullet.rect.y = (y + 30)
+                    all_sprites_list.add(bullet)
+                    bullet_list.add(bullet)
+                if direction == RIGHT:
+                    bullet = rightBullet()
+                    bullet.rect.x = (x + 25)
+                    bullet.rect.y = (y + 30)
+                    all_sprites_list.add(bullet)
+                    bullet_list.add(bullet)
+
+
+
+
+
 
         elif event.type == KEYUP:
             if event.key in (K_LSHIFT, K_RSHIFT):
@@ -165,6 +240,12 @@ while True:
                     direction = UP
                 if moveDown:
                     direction = DOWN
+    for bullet in bullet_list:
+        if bullet.rect.y < -10 or bullet.rect.y > 500 or bullet.rect.x < -10 or bullet.rect.x > 650:
+            print('off screen')
+            bullet_list.remove(bullet)
+            all_sprites_list.remove(bullet)
+
 
     if moveUp or moveDown or moveLeft or moveRight:
         # draw the correct walking/running sprite from the animation object
