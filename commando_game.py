@@ -3,18 +3,17 @@ import sys
 import pyganim
 from pygame.locals import *
 from game_interface import GameInterface
-from random import randint
 from bullet import Bullet, downBullet, leftBullet, rightBullet
 from enemy_class import Enemy
 
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
 game_interface = GameInterface()
-click_start = pygame.mixer.Sound('sound/DoubleGunshot.wav')
+click_start = pygame.mixer.Sound('sound/RifleshotV2.wav')
 walking = pygame.mixer.Sound('sound/Walking.wav')
 gunshot = pygame.mixer.Sound('sound/Gunshot.wav')
 deathsound = pygame.mixer.Sound('sound/deathsound.wav')
-menu_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
+game_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
 deathsound.set_volume(.5)
 gunshot.set_volume(.6)
 walking.set_volume(.8)
@@ -103,6 +102,7 @@ def game():
 
     while True:
         display_surface.blit(background_game, (background_x, background_y))
+        game_interface.score_board()
 
         for event in pygame.event.get():
 
@@ -300,6 +300,7 @@ def game():
             for enemy in enemy_hit_list:
                 bullet_list.remove(bullet)
                 all_sprites_list.remove(bullet)
+                game_interface.score += 10
                 deathsound.play()
 
             # Remove the bullet if it flies out of the screen
@@ -317,7 +318,9 @@ def game():
 
 def main():
     """This function runs the main menu for the game."""
-    game_interface.start_setup()
+    game_interface.all_buttons_inactive()
+    game_interface.score = 0
+    pygame.mixer.music.stop()
 
     while True:
         for event in pygame.event.get():

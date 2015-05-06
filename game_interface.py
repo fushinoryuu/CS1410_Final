@@ -43,7 +43,8 @@ class GameInterface:
 
         self.game_font = pygame.font.SysFont("Arial", 100)
 
-        self.score_active = False
+        self.score = 0
+        #self.score_active = False
 
     def all_buttons_inactive(self):
         for i in self.button_list:
@@ -52,9 +53,6 @@ class GameInterface:
     def all_buttons_active(self):
         for i in self.button_list:
             i.activate()
-
-    def start_setup (self):
-        self.all_buttons_inactive()
 
     def display_all_buttons(self):
         for x in self.button_list:
@@ -71,5 +69,19 @@ class GameInterface:
             self.display_all_buttons()
 
     def reset_game(self):
-        self.start_setup()
+        self.all_buttons_inactive()
         self.display_interface()
+
+    def display_score(self):
+        score_string = "Player's Points: " + str(self.score)
+        score_surface = self.game_font.render(score_string, True, self.white, None)
+        score_surface = pygame.transform.scale(score_surface, (self.display_width - (self.display_width//3),
+                                                                 self.display_height//10))
+        w, h = score_surface.get_size()
+        score_x = (self.display_width - w)//2
+        score_y = self.display_height - self.display_height//5
+        self.display_surface.blit(score_surface, (score_x, score_y))
+
+    def score_board(self):
+        self.all_buttons_inactive()
+        self.display_score()
