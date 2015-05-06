@@ -4,7 +4,7 @@ import pyganim
 from pygame.locals import *
 from game_interface import GameInterface
 from bullet import Bullet, downBullet, leftBullet, rightBullet
-from enemy_class import Enemy
+from enemy_class import Enemy, Crate
 
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
@@ -13,8 +13,10 @@ click_start = pygame.mixer.Sound('sound/RifleshotV2.wav')
 walking = pygame.mixer.Sound('sound/Walking.wav')
 gunshot = pygame.mixer.Sound('sound/Gunshot.wav')
 deathsound = pygame.mixer.Sound('sound/deathsound.wav')
+breaksound = pygame.mixer.Sound('sound/DebrisHit.wav')
 game_music = pygame.mixer.music.load('sound/bensound-extremeaction.ogg')
 deathsound.set_volume(.5)
+breaksound.set_volume(1)
 gunshot.set_volume(.6)
 walking.set_volume(.8)
 click_start.set_volume(1)
@@ -43,10 +45,6 @@ def game():
     right_standing = pygame.transform.flip(left_standing, True, False)
     player_width, player_height = front_standing.get_size()
 
-
-    # Load the enemy sprites
-    #enemy_left = pygame.image.load('gameimages/enemies/enemy_front.gif')
-
     # Create the PygAnim objects for walking/running in all directions
     animation_types = 'back_walk front_walk left_walk'.split()
     animation_objects = {}
@@ -62,6 +60,13 @@ def game():
                                  (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
         enemy_objects[animType] = pyganim.PygAnimation(images_and_durations)"""
 
+    crate_types = 'break'.split()
+    crate_animations = {}
+    for animType in crate_types:
+        images_and_durations = [('gameimages/enemies/crate_%s.%s.gif' %
+                                 (animType, str(num).rjust(3, '0')), .5) for num in range(2)]
+        crate_animations[animType] = pyganim.PygAnimation(images_and_durations)
+
     # Creates the right-facing sprites by copying the left ones.
     animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
     animation_objects['right_walk'].flip(True, False)
@@ -69,6 +74,7 @@ def game():
 
 
     move_conductor = pyganim.PygConductor(animation_objects)
+    crate_conductor = pyganim.PygConductor(crate_animations)
     #enemy_conductor = pyganim.PygConductor(enemy_objects)
 
     # The player's default on spawn is facing down.
@@ -93,12 +99,19 @@ def game():
     all_sprites_list = pygame.sprite.Group()
     bullet_list = pygame.sprite.Group()
     enemy_list = pygame.sprite.Group()
+    crate_list = pygame.sprite.Group()
 
-    enemy_obj = Enemy(display_surface)
+    enemy_obj = Enemy()
     enemy_obj.rect.x = enemy_x
     enemy_obj.rect.y = enemy_y
     enemy_list.add(enemy_obj)
     all_sprites_list.add(enemy_obj)
+
+    crate_obj = Crate()
+    crate_obj.rect.x = 200
+    crate_obj.rect.y = 200
+    crate_list.add(crate_obj)
+    all_sprites_list.add(crate_obj)
 
     while True:
         display_surface.blit(background_game, (background_x, background_y))
@@ -295,6 +308,7 @@ def game():
         for bullet in bullet_list:
             # See if it hit an enemy
             enemy_hit_list = pygame.sprite.spritecollide(bullet, enemy_list, True)
+            crate_hit_list = pygame.sprite.spritecollide(bullet, crate_list, True)
 
             # For each enemy hit, remove the bullet
             for enemy in enemy_hit_list:
@@ -302,6 +316,15 @@ def game():
                 all_sprites_list.remove(bullet)
                 game_interface.score += 10
                 deathsound.play()
+
+            for crate in crate_hit_list:
+                breaksound.play()
+                bullet_list.remove(bullet)
+                all_sprites_list.remove(bullet)
+                game_interface.score += 5
+                crate_conductor.play()
+                crate_animations['break'].blit(display_surface, (crate_obj.rect.x, crate_obj.rect.y))
+                crate_conductor.stop()
 
             # Remove the bullet if it flies out of the screen
             if bullet.rect.y < -10 or bullet.rect.y > 500 or bullet.rect.x < -10 or bullet.rect.x > 650:
