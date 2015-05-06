@@ -30,7 +30,7 @@ def game():
     pygame.display.set_caption('Commando!')
 
     # Load images
-    background_game = pygame.image.load('gameimages/asphaltBG.bmp')
+    background_game = pygame.image.load('gameimages/crackeddirt.png')
 
     # Load the player sprites
     front_standing = pygame.image.load('gameimages/player/crono_front.gif')
