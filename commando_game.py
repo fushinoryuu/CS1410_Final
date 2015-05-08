@@ -4,12 +4,14 @@ import pyganim
 import random
 from pygame.locals import *
 from game_interface import GameInterface
-from bullet import Bullet, downBullet, leftBullet, rightBullet
+from bullet import upBullet, downBullet, leftBullet, rightBullet
 from collidable import Enemy, Crate, Goal, Player
 
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
 game_interface = GameInterface()
+
+# Load all the sound effects we use in the game.
 click_start = pygame.mixer.Sound('sound/RifleshotV2.wav')
 walking = pygame.mixer.Sound('sound/Walking.wav')
 gunshot = pygame.mixer.Sound('sound/Gunshot.wav')
@@ -24,7 +26,7 @@ click_start.set_volume(.2)
 pygame.mixer.music.set_volume(.07)
 
 def end():
-    """This function runs the main menu for the game."""
+    """This function runs the end of the game once the goal is reached."""
     game_interface.all_buttons_inactive()
     pygame.mixer.music.stop()
 
@@ -65,6 +67,8 @@ def end():
         pygame.display.update()
 
 def game():
+    """This function runs the main game."""
+
     # Define controls
     up = 'up'
     down = 'down'
@@ -95,13 +99,6 @@ def game():
                                  (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
         animation_objects[animType] = pyganim.PygAnimation(images_and_durations)
 
-    """enemy_types = 'left_walk'.split()
-    enemy_objects = {}
-    for animType in enemy_types:
-        images_and_durations = [('gameimages/enemies/enemy_%s.%s.gif' %
-                                 (animType, str(num).rjust(3, '0')), 0.1) for num in range(2)]
-        enemy_objects[animType] = pyganim.PygAnimation(images_and_durations)"""
-
     # Creates the right-facing sprites by copying the left ones.
     animation_objects['right_walk'] = animation_objects['left_walk'].getCopy()
     animation_objects['right_walk'].flip(True, False)
@@ -112,6 +109,7 @@ def game():
     animation_objects['right_walk'].flip(True, False)
     animation_objects['right_walk'].makeTransformsPermanent()
 
+    # Creates the animations for the crates breaking.
     crate_types = 'break'.split()
     crate_animations = {}
     for animType in crate_types:
@@ -119,6 +117,7 @@ def game():
                                  (animType, str(num).rjust(3, '0')), .5) for num in range(2)]
         crate_animations[animType] = pyganim.PygAnimation(images_and_durations)
 
+    # Creates the animations for the helicopter/goal.
     goal_types = 'goal'.split()
     goal_animations = {}
     for animType in goal_types:
@@ -128,7 +127,6 @@ def game():
 
     move_conductor = pyganim.PygConductor(animation_objects)
     goal_conductor = pyganim.PygConductor(goal_animations)
-    #enemy_conductor = pyganim.PygConductor(enemy_objects)
 
     # The player's default on spawn is facing down.
     direction = down
@@ -146,6 +144,7 @@ def game():
 
     running = move_up = move_down = move_left = move_right = False
 
+    # Creates all the sprite groups for collision.
     all_sprites_list = pygame.sprite.Group()
     bullet_list = pygame.sprite.Group()
     enemy_list = pygame.sprite.Group()
@@ -153,6 +152,7 @@ def game():
     goal_list = pygame.sprite.Group()
     player_list = pygame.sprite.Group()
 
+    # Creates 10 enemies that will be displayed at random in the map.
     enemy_1 = Enemy()
     enemy_1.rect.x = random.randrange(0, 1500)
     enemy_1.rect.y = random.randrange(0, 2000)
@@ -213,6 +213,7 @@ def game():
     enemy_list.add(enemy_10)
     all_sprites_list.add(enemy_10)
 
+    # Creates 10 crates that will be displayed at random in the map.
     crate_1 = Crate()
     crate_1.rect.x = random.randrange(0, 1500)
     crate_1.rect.y = random.randrange(0, 2000)
@@ -273,12 +274,14 @@ def game():
     crate_list.add(crate_10)
     all_sprites_list.add(crate_10)
 
+    # Creates the goal for the game.
     goal_obj = Goal()
     goal_obj.rect.x = 800
     goal_obj.rect.y = 800
     goal_list.add(goal_obj)
     all_sprites_list.add(goal_obj)
 
+    # Creates the player's collision.
     player_obj = Player()
     player_obj.rect.x = player_x
     player_obj.rect.y = player_y
@@ -287,6 +290,7 @@ def game():
 
 
     while True:
+        # THe main game loop.
         display_surface.blit(background_game, (background_x, background_y))
         game_interface.score_board()
         goal_conductor.play()
@@ -335,7 +339,7 @@ def game():
                 elif event.key == K_SPACE:
                     gunshot.play()
                     if direction == up:
-                        bullet = Bullet()
+                        bullet = upBullet()
                         bullet.rect.x = (player_x + 25)
                         bullet.rect.y = player_y
                         all_sprites_list.add(bullet)
@@ -360,8 +364,6 @@ def game():
                         bullet_list.add(bullet)
 
             elif event.type == KEYUP:
-
-
                 if event.key == K_UP:
                     move_up = False
                     walking.stop()
@@ -544,7 +546,6 @@ def game():
                 display_surface.blit(right_standing, (player_x, player_y))
 
         # Make sure the player does move off the screen
-
         if player_x > screen_width - (screen_width // 3):
             if background_x > - screen_width:
                 player_x = screen_width - (screen_width // 3)
@@ -622,11 +623,8 @@ def game():
                 end()
 
         all_sprites_list.draw(display_surface)
-
         pygame.display.update()
-
         clock.tick(30)
-
 
 def main():
     """This function runs the main menu for the game."""

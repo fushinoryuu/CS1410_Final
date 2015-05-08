@@ -3,8 +3,9 @@ from pygame.locals import *
 
 pygame.init()
 
-class Bullet(pygame.sprite.Sprite):
-    """ This class represents the bullet . """
+
+class upBullet(pygame.sprite.Sprite):
+    """This class represents the bullet that travels up."""
     def __init__(self):
         # Call the parent class (Sprite) constructor
         super().__init__()
@@ -15,7 +16,10 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         """ Move the bullet. """
         self.rect.y -= 7
+
+
 class downBullet(pygame.sprite.Sprite):
+    """This class represents the bullet that travels down."""
     def __init__(self):
         # Call the parent class (Sprite) constructor
         super().__init__()
@@ -29,7 +33,9 @@ class downBullet(pygame.sprite.Sprite):
         """ Move the bullet. """
         self.rect.y += 7
 
+
 class leftBullet(pygame.sprite.Sprite):
+    """This class represents the bullet that travels left."""
     def __init__(self):
         # Call the parent class (Sprite) constructor
         super().__init__()
@@ -43,7 +49,9 @@ class leftBullet(pygame.sprite.Sprite):
         """ Move the bullet. """
         self.rect.x -= 7
 
+
 class rightBullet(pygame.sprite.Sprite):
+    """This class represents the bullet that travels right."""
     def __init__(self):
         # Call the parent class (Sprite) constructor
         super().__init__()
